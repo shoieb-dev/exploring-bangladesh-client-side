@@ -1,4 +1,15 @@
-.bg-carousel{
-    background-color: rgba(34, 110, 59, 0.5);
-    border-radius: 30px;
+/* Shared Styling */
+.hero-img {
+  height: 90vh;
+  object-fit: cover;
+  filter: brightness(0.85);
+}
+
+/* Tourism Site Hero Styling */
+.bg-carousel {
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px); /* Creates a modern glassmorphism effect */
+  border-radius: 16px;
+  max-width: 700px;
+  margin: 0 auto 50px auto;
 }
