@@ -1,4 +1,7 @@
-.package-bg{
-    background-color: rgb(141, 224, 224);
-    border-radius: 20px;
+#packages {
+  background-color: #f8f9fa;
+}
+
+.tracking-wider {
+  letter-spacing: 1.5px;
 }
