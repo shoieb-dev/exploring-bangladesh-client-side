@@ -1,9 +1,25 @@
 /* brand logo  */
-.brand{
-    font-family: 'Righteous', cursive;
+.brand {
+  font-family: "Righteous", cursive;
 }
 
-.header{
-    padding-bottom: 0;
-    background-color: rgba(29, 25, 25, 0.83);
+.header {
+  padding-bottom: 0;
+  background-color: rgba(29, 25, 25, 0.83);
+}
+
+.login-link {
+  background-color: #ffc107;
+  border: 1px solid #ffc107;
+  color: #fff !important;
+  display: inline-block;
+  margin-left: 0.5rem;
+  text-align: center;
+}
+
+.login-link:hover,
+.login-link:focus {
+  background-color: #fdbe00;
+  border-color: #ffca2c;
+  color: #000 !important;
 }

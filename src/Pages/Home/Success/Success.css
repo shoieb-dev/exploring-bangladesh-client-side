@@ -1,13 +1,33 @@
-.success-bg{
-    background-image: url('https://i.ibb.co/DVV5q42/bd-map.png');
-    background-size: cover;
-    background-attachment: fixed;
+.success-bg {
+  background-image:
+    linear-gradient(rgba(10, 35, 45, 0.35), rgba(10, 35, 45, 0.35)), url("https://i.ibb.co/DVV5q42/bd-map.png");
+  background-size: cover;
+  background-position: center;
+  padding-bottom: 2rem;
 }
 
-.success-card{
-    background-color: rgb(173, 233, 227);
-    margin: 10px;
+.success-card {
+  height: 100%;
+  margin: 10px;
+  border: 1px solid rgba(0, 80, 90, 0.25);
+  background-color: rgba(173, 233, 227, 0.92);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
-.success-card:hover{
-    background-color: rgba(64, 224, 208, 0.342);
+
+.success-card:hover {
+  background-color: rgba(173, 233, 227, 0.98);
+  transform: translateY(-6px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+}
+
+@media (max-width: 768px) {
+  .success-bg {
+    background-attachment: scroll;
+  }
+
+  .success-card {
+    margin: 8px 0;
+  }
 }
