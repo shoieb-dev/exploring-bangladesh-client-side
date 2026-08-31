@@ -1,25 +1,159 @@
-/* brand logo  */
+/* Brand styling */
 .brand {
   font-family: "Righteous", cursive;
+  font-size: 1.2rem;
 }
 
+.navbar-brand-container {
+  display: flex;
+  align-items: center;
+  transition: opacity 0.2s ease;
+}
+
+.navbar-brand-container:hover {
+  opacity: 0.9;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.brand-text small {
+  font-size: 0.7rem;
+}
+
+/* Header background */
 .header {
-  padding-bottom: 0;
-  background-color: rgba(29, 25, 25, 0.83);
+  padding: 0.5rem 0;
+  background-color: rgba(29, 25, 25, 0.95);
+  border-bottom: 1px solid rgba(255, 193, 7, 0.1);
+  backdrop-filter: blur(10px);
 }
 
+/* Navigation links */
+.nav-link-item {
+  color: rgba(255, 255, 255, 0.9) !important;
+  margin: 0 0.5rem;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.nav-link-item::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #ffc107;
+  transition: width 0.3s ease;
+}
+
+.nav-link-item:hover {
+  color: #ffc107 !important;
+}
+
+.nav-link-item:hover::after {
+  width: 100%;
+}
+
+/* User dropdown */
+.user-dropdown .dropdown-toggle {
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  border-radius: 20px;
+  padding: 0.4rem 0.8rem;
+  transition: all 0.2s ease;
+}
+
+.user-dropdown .dropdown-toggle:hover {
+  border-color: #ffc107;
+  background-color: rgba(255, 193, 7, 0.1);
+}
+
+.dropdown-menu {
+  border-radius: 8px;
+  border: 1px solid rgba(255, 193, 7, 0.2);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-item {
+  transition: all 0.2s ease;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.dropdown-item:hover {
+  background-color: rgba(255, 193, 7, 0.15);
+  color: #ffc107;
+}
+
+.logout-item {
+  background-color: rgba(255, 193, 7, 0.2);
+}
+
+.logout-item:hover {
+  background-color: rgba(255, 193, 7, 0.3);
+  color: #ffc107;
+}
+
+/* Login button */
 .login-link {
   background-color: #ffc107;
   border: 1px solid #ffc107;
-  color: #fff !important;
+  color: #1a1a1a !important;
+  padding: 0.4rem 1rem !important;
+  border-radius: 20px;
   display: inline-block;
-  margin-left: 0.5rem;
   text-align: center;
+  font-weight: 600;
+  transition: all 0.2s ease;
 }
 
-.login-link:hover,
-.login-link:focus {
-  background-color: #fdbe00;
+.login-link:hover {
+  background-color: #ffca2c;
   border-color: #ffca2c;
   color: #000 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3);
+}
+
+.login-link:focus {
+  outline: 2px solid #ffc107;
+  outline-offset: 2px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+  .nav-link-item::after {
+    display: none;
+  }
+
+  .nav-link-item {
+    padding-left: 0;
+  }
+
+  .navbar-brand-container img {
+    width: 45px;
+    height: 45px;
+  }
+
+  .brand {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .navbar-brand-container {
+    flex: 1;
+  }
+
+  .brand-text small {
+    font-size: 0.65rem;
+  }
+
+  .login-link {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
 }
