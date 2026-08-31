@@ -1,76 +1,76 @@
-import { faQuoteLeft } from "@fortawesome/free-solid-svg-icons";
+import { faQuoteLeft, faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
-import { Card, Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import "./Testimonials.css";
 
 const Testimonials = () => {
-    return (
-        <div id="testimonial" className="bg-light">
-            <h1 className="pt-5">
-                What <span className="text-info">Travellers </span> Says
-            </h1>
-            <div className="py-5">
-                <Container>
-                    <Row xs={1} md={2} lg={3}>
-                        <Col>
-                            <Card className="testimonial-card m-1 h-100 d-flex flex-column">
-                                <Card.Img
-                                    variant="top"
-                                    className="w-50 mx-auto mt-4"
-                                    src="https://i.ibb.co/VTD7WWn/iconfinder-8-avatar-2754583-120515.png"
-                                />
-                                <Card.Body className="d-flex flex-column flex-grow-1">
-                                    <Card.Title>Talha Rahman</Card.Title>
-                                    <Card.Text className="flex-grow-1">
-                                        <FontAwesomeIcon className="mx-2 text-secondary" icon={faQuoteLeft} size="2x" />
-                                        We had fantastic service in Cox's Bazar. I strongly recommend that everyone use
-                                        this website.
-                                    </Card.Text>
-                                </Card.Body>
-                            </Card>
-                        </Col>
+  const testimonials = [
+    {
+      id: 1,
+      name: "Brian Davis",
+      rating: 5,
+      location: "Cox's Bazar",
+      text: "We had fantastic service in Cox's Bazar. I strongly recommend that everyone use this website.",
+      avatar: "https://i.ibb.co.com/Css5m61D/v3-0833982.jpg",
+    },
+    {
+      id: 2,
+      name: "John Smith",
+      rating: 5,
+      location: "Kuakata",
+      text: "In Kuakata, we had excellent service. I strongly advise anyone to utilize this website.",
+      avatar: "https://i.ibb.co.com/M56R9YCV/v3-0629518.jpg",
+    },
+    {
+      id: 3,
+      name: "Sarah Johnson",
+      rating: 5,
+      location: "Bandarban",
+      text: "We had outstanding service in Bandarban. This is a website that I strongly recommend to anybody.",
+      avatar: "https://i.ibb.co.com/5g453PQ0/v3-0056533.jpg",
+    },
+  ];
 
-                        <Col>
-                            <Card className="testimonial-card m-1 h-100 d-flex flex-column">
-                                <Card.Img
-                                    variant="top"
-                                    className="w-50 mx-auto mt-4"
-                                    src="https://i.ibb.co/09Yh7GC/image.png"
-                                />
-                                <Card.Body className="d-flex flex-column flex-grow-1">
-                                    <Card.Title>Shakil Ahmed</Card.Title>
-                                    <Card.Text className="flex-grow-1">
-                                        <FontAwesomeIcon className="mx-2 text-secondary" icon={faQuoteLeft} size="2x" />
-                                        In Kuakata, we had excellent service. I strongly advise anyone to utilize this
-                                        website.
-                                    </Card.Text>
-                                </Card.Body>
-                            </Card>
-                        </Col>
+  const renderStars = (rating) => (
+    <div className="testimonial-rating justify-content-center d-flex">
+      {Array.from({ length: 5 }, (_, i) => (
+        <FontAwesomeIcon key={i} icon={faStar} className={i < rating ? "text-warning" : "text-secondary"} size="sm" />
+      ))}
+    </div>
+  );
 
-                        <Col>
-                            <Card className="testimonial-card m-1 h-100 d-flex flex-column">
-                                <Card.Img
-                                    variant="top"
-                                    className="w-50 mx-auto mt-4"
-                                    src="https://i.ibb.co/G7FJNqt/image.png"
-                                />
-                                <Card.Body className="d-flex flex-column flex-grow-1">
-                                    <Card.Title>Yousuf Samiul</Card.Title>
-                                    <Card.Text className="flex-grow-1">
-                                        <FontAwesomeIcon className="mx-2 text-secondary" icon={faQuoteLeft} size="2x" />
-                                        We had outstanding service in Bandarban. This is a website that I strongly
-                                        recommend to anybody.
-                                    </Card.Text>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                    </Row>
-                </Container>
-            </div>
-        </div>
-    );
+  return (
+    <section id="testimonial" className="testimonials-section bg-light">
+      <div className="pt-5 pb-2">
+        <h2 className="text-center mb-2">
+          What <span className="text-info">Travellers</span> Say
+        </h2>
+        <p className="text-center text-muted mb-5">Real experiences from our happy clients</p>
+      </div>
+      <div className="py-5">
+        <Container>
+          <Row xs={1} md={2} lg={3} className="g-4">
+            {testimonials.map((testimonial) => (
+              <Col key={testimonial.id} className="d-flex">
+                <article className="testimonial-card w-100 h-100 d-flex flex-column position-relative">
+                  <FontAwesomeIcon className="quote-icon" icon={faQuoteLeft} aria-hidden="true" />
+                  <div className="text-center mt-4 mb-3">
+                    <img className="testimonial-avatar" src={testimonial.avatar} alt={testimonial.name} />
+                  </div>
+                  <div className="d-flex flex-column flex-grow-1 px-3">
+                    <h5 className="card-title mb-2">{testimonial.name}</h5>
+                    {renderStars(testimonial.rating)}
+                    <p className="testimonial-text flex-grow-1 mt-3">{testimonial.text}</p>
+                    <small className="text-muted">{testimonial.location}</small>
+                  </div>
+                </article>
+              </Col>
+            ))}
+          </Row>
+        </Container>
+      </div>
+    </section>
+  );
 };
 
 export default Testimonials;
