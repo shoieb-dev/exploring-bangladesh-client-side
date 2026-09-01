@@ -11,7 +11,7 @@ const Testimonials = () => {
       rating: 5,
       location: "Cox's Bazar",
       text: "We had fantastic service in Cox's Bazar. I strongly recommend that everyone use this website.",
-      avatar: "https://i.ibb.co.com/Css5m61D/v3-0833982.jpg",
+      avatar: "https://i.ibb.co.com/Jjf09Wng/face-image.jpg",
     },
     {
       id: 2,
@@ -19,7 +19,7 @@ const Testimonials = () => {
       rating: 5,
       location: "Kuakata",
       text: "In Kuakata, we had excellent service. I strongly advise anyone to utilize this website.",
-      avatar: "https://i.ibb.co.com/M56R9YCV/v3-0629518.jpg",
+      avatar: "https://i.ibb.co.com/GvxYxhY9/uifaces-popular-image-2.jpg",
     },
     {
       id: 3,
