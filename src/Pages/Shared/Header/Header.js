@@ -33,8 +33,8 @@ const Header = () => {
             alt="X-Ploring Bangladesh Logo"
           />
           <div className="brand-text">
-            <span className="brand text-warning">X-PLORING</span>
-            <small className="text-info d-block">BANGLADESH</small>
+            <h5 className="brand text-warning">X-PLORING</h5>
+            <h6 className="text-info">BANGLADESH</h6>
           </div>
         </Navbar.Brand>
 
