@@ -1,6 +1,5 @@
 import { faHandsHelping, faUserCheck, faUserClock, faUserFriends } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import "./Success.css";
 
@@ -22,7 +21,7 @@ const Success = () => {
             <Col className="d-flex">
               <Card className="success-card w-100 p-3">
                 <Card.Body className="d-flex flex-column justify-content-center align-items-center">
-                  <FontAwesomeIcon className="success-icon my-3" icon={faUserFriends} size="4x" aria-hidden="true" />
+                  <FontAwesomeIcon className="my-3" icon={faUserFriends} size="4x" aria-hidden="true" />
                   <Card.Title>100+ Local Guides</Card.Title>
                 </Card.Body>
               </Card>
@@ -31,7 +30,7 @@ const Success = () => {
             <Col className="d-flex">
               <Card className="success-card w-100 p-3">
                 <Card.Body className="d-flex flex-column justify-content-center align-items-center">
-                  <FontAwesomeIcon className="success-icon my-3" icon={faHandsHelping} size="4x" aria-hidden="true" />
+                  <FontAwesomeIcon className="my-3" icon={faHandsHelping} size="4x" aria-hidden="true" />
                   <Card.Title>100% Trusted Travel Agency</Card.Title>
                 </Card.Body>
               </Card>
@@ -40,7 +39,7 @@ const Success = () => {
             <Col className="d-flex">
               <Card className="success-card w-100 p-3">
                 <Card.Body className="d-flex flex-column justify-content-center align-items-center">
-                  <FontAwesomeIcon className="success-icon my-3" icon={faUserClock} size="4x" aria-hidden="true" />
+                  <FontAwesomeIcon className="my-3" icon={faUserClock} size="4x" aria-hidden="true" />
                   <Card.Title>5+ Years of Travel Experience</Card.Title>
                 </Card.Body>
               </Card>
@@ -49,7 +48,7 @@ const Success = () => {
             <Col className="d-flex">
               <Card className="success-card w-100 p-3">
                 <Card.Body className="d-flex flex-column justify-content-center align-items-center">
-                  <FontAwesomeIcon className="success-icon my-3" icon={faUserCheck} size="4x" aria-hidden="true" />
+                  <FontAwesomeIcon className="my-3" icon={faUserCheck} size="4x" aria-hidden="true" />
                   <Card.Title>80% Happy Travelers</Card.Title>
                 </Card.Body>
               </Card>
