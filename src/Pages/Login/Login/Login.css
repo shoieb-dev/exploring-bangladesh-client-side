@@ -1,11 +1,386 @@
-.login{
-    background-image: url('https://i.ibb.co.com/GPrL7v6/Explore-Bangladesh-travel-destinations-1024x585.jpg');
-    background-size: cover;
-    background-position: center;
-    /* background-attachment: fixed; */
-    min-height: 650px;
-    padding-top: 90px;
+/* Login page container */
+.login {
+  background-image:
+    linear-gradient(rgba(10, 35, 45, 0.5), rgba(10, 35, 45, 0.5)),
+    url("https://i.ibb.co/GPrL7v6/Explore-Bangladesh-travel-destinations-1024x585.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px 40px 20px;
+  margin-top: 20px;
 }
-.bg-login{
-    background-color: rgba(29, 25, 25, 0.8); 
+
+/* Login card container */
+.login-container {
+  background-color: rgba(29, 25, 25, 0.92);
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  max-width: 450px;
+  width: 100%;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 193, 7, 0.1);
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.login-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Login header section */
+.login-header {
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.login-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.5px;
+}
+
+.login-subtitle {
+  font-size: 1.1rem;
+  color: #ffc107;
+  margin: 0;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Login form */
+.login-form {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.login-form .form-label {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.login-form .form-control {
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.login-form .form-control:focus {
+  background-color: rgba(255, 255, 255, 0.12);
+  border-color: #17a2b8;
+  box-shadow: 0 0 0 0.2rem rgba(23, 162, 184, 0.25);
+  color: #ffffff;
+}
+
+.login-form .form-control::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.login-form .form-control.is-valid {
+  border-color: #28a745;
+  background-image: none;
+}
+
+.login-form .form-control.is-invalid {
+  border-color: #dc3545;
+  background-image: none;
+}
+
+.auth-inline-message {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.8rem 1rem;
+  margin: 0.5rem 0 1rem;
+  border-radius: 10px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.4;
+  border: 1px solid transparent;
+}
+
+.auth-inline-message-error {
+  background: rgba(220, 53, 69, 0.12);
+  color: #ffd4d8;
+  border-color: rgba(220, 53, 69, 0.35);
+}
+
+.auth-inline-message-success {
+  background: rgba(40, 167, 69, 0.12);
+  color: #d4f8dd;
+  border-color: rgba(40, 167, 69, 0.35);
+}
+
+/* Input group */
+.input-group {
+  position: relative;
+}
+
+.input-group .form-control {
+  border-radius: 8px 0 0 8px;
+}
+
+.input-group .btn {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background-color: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+  padding: 0.7rem 1rem;
+  border-left: none;
+  border-radius: 0 8px 8px 0;
+  transition: all 0.2s ease;
+}
+
+.input-group .btn:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #17a2b8;
+}
+
+/* Login button (Sign In) */
+.login-button {
+  background-color: #17a2b8;
+  border: none;
+  font-size: 1rem;
+  padding: 0.75rem 2rem !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: #ffffff !important;
+  width: 100%;
+}
+
+.login-button:hover:not(:disabled) {
+  background-color: #138496;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(23, 162, 184, 0.3);
+}
+
+.login-button:focus {
+  outline: 2px solid #17a2b8;
+  outline-offset: 2px;
+}
+
+.login-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Divider */
+.login-divider {
+  width: 100%;
+  text-align: center;
+  position: relative;
+  margin: 0.5rem 0;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.login-divider::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
+  z-index: 0;
+}
+
+.login-divider span {
+  position: relative;
+  background-color: rgba(29, 25, 25, 0.92);
+  padding: 0 1rem;
+  z-index: 1;
+}
+
+/* Google button (Alternative) */
+.google-button {
+  background-color: transparent;
+  border: 2px solid #17a2b8 !important;
+  color: #17a2b8 !important;
+  font-size: 1rem;
+  padding: 0.7rem 1.5rem !important;
+  border-radius: 30px !important;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.google-button:hover:not(:disabled) {
+  background-color: rgba(23, 162, 184, 0.15);
+  border-color: #17a2b8 !important;
+  color: #1dd1a1 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(23, 162, 184, 0.3);
+}
+
+.google-button:focus {
+  outline: 2px solid #17a2b8;
+  outline-offset: 2px;
+}
+
+.google-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.google-button img {
+  display: inline-block;
+}
+
+/* Login links (Forgot Password) */
+.login-links {
+  text-align: right;
+  font-size: 0.85rem;
+}
+
+.forgot-link {
+  color: #ffc107;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.forgot-link:hover {
+  color: #ffca2c;
+  text-decoration: underline;
+}
+
+/* Login signup section */
+.login-signup {
+  width: 100%;
+  text-align: center;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 0.5rem;
+}
+
+.login-signup .text-light {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.signup-link-text {
+  color: #ffc107;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.signup-link-text:hover {
+  color: #ffca2c;
+  text-decoration: underline;
+}
+
+/* Error alert styling */
+.alert-danger {
+  background-color: rgba(220, 53, 69, 0.2);
+  border: 1px solid rgba(220, 53, 69, 0.5);
+  border-radius: 12px;
+  color: #ff7675;
+}
+
+.alert-danger .alert-heading {
+  color: #ff7675;
+  font-weight: 600;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .login {
+    background-attachment: scroll;
+    padding: 60px 20px 20px 20px;
+    min-height: auto;
+  }
+
+  .login-container {
+    margin: 0;
+    max-width: 100%;
+  }
+
+  .login-title {
+    font-size: 1.5rem;
+  }
+
+  .login-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .login-button,
+  .google-button {
+    font-size: 0.95rem;
+    padding: 0.65rem 1.2rem !important;
+  }
+
+  .login-form .form-control {
+    font-size: 0.9rem;
+    padding: 0.6rem 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    border-radius: 16px;
+    padding: 2rem 1.5rem !important;
+  }
+
+  .login-title {
+    font-size: 1.3rem;
+  }
+
+  .login-subtitle {
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+  }
+
+  .login-button,
+  .google-button {
+    font-size: 0.9rem;
+    padding: 0.6rem 1.2rem !important;
+  }
+
+  .google-button img {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .login-form .form-control {
+    font-size: 0.85rem;
+    padding: 0.6rem 0.8rem;
+  }
+
+  .login-divider span {
+    font-size: 0.8rem;
+    padding: 0 0.8rem;
+  }
 }
