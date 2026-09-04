@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "./../../../hooks/useAuth";
 import { validateEmail } from "./../../../services/passwordValidator";
-import ToastNotification from "../../../components/ToastNotification";
+import ToastNotification from "../../../components/ToastNotification/ToastNotification";
 import "./Login.css";
 
 const Login = () => {
@@ -186,7 +186,7 @@ const Login = () => {
               onClick={handleGoogleLogin}
               variant="outline-info"
               size="lg"
-              className="google-button fw-bold mb-2"
+              className="google-button fw-bold"
               disabled={isLoading}
               aria-label="Sign in with Google"
               aria-busy={isLoading}
