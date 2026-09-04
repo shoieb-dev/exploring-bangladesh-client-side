@@ -10,7 +10,7 @@ import {
   validatePhone,
   getPasswordStrengthColor,
 } from "../../../services/passwordValidator";
-import ToastNotification from "../../../components/ToastNotification";
+import ToastNotification from "../../../components/ToastNotification/ToastNotification";
 import "./Signup.css";
 
 const Signup = () => {

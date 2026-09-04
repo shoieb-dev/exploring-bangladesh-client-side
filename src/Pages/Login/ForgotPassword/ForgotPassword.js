@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faCheck } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "../../../hooks/useAuth";
 import { validateEmail } from "../../../services/passwordValidator";
-import ToastNotification from "../../../components/ToastNotification";
+import ToastNotification from "../../../components/ToastNotification/ToastNotification";
 import "./ForgotPassword.css";
 
 const ForgotPassword = () => {
