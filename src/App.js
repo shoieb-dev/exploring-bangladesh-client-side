@@ -43,9 +43,9 @@ function App() {
               <ForgotPassword></ForgotPassword>
             </Route>
 
-            <PrivateRoute path="/booking/:serviceId">
+            <Route path={["/packages/:serviceId", "/booking/:serviceId"]}>
               <Booking></Booking>
-            </PrivateRoute>
+            </Route>
 
             <PrivateRoute path="/myPackages">
               <MyPackages></MyPackages>
