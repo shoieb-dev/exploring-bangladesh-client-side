@@ -1,0 +1,171 @@
+.auth-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1050;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(7, 10, 12, 0.72);
+  /* backdrop-filter: blur(0px); */
+}
+.auth-modal {
+  position: relative;
+  width: min(100%, 450px);
+  padding: 2.7rem 3rem 2.2rem;
+  border: 1px solid rgba(255, 193, 7, 0.28);
+  border-radius: 20px;
+  background: rgba(29, 25, 25, 0.97);
+  color: #fff;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5);
+  animation: authModalIn 0.22s ease-out;
+}
+.auth-modal-close {
+  position: absolute;
+  top: 0.65rem;
+  right: 1rem;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 1.8rem;
+  line-height: 1;
+}
+.auth-modal-close:hover {
+  color: #ffc107;
+}
+.auth-modal-heading {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.auth-modal-heading h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 800;
+}
+.auth-modal-heading p {
+  margin: 0.6rem 0 0;
+  color: #ffc107;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.auth-modal-heading p span {
+  color: #17a2b8;
+}
+.auth-modal .form-label {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 700;
+}
+.auth-modal .form-control {
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+.auth-modal .form-control::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+.auth-modal .form-control:focus {
+  border-color: #17a2b8;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  box-shadow: 0 0 0 0.2rem rgba(23, 162, 184, 0.2);
+}
+.auth-password-field {
+  display: flex;
+}
+.auth-password-field .form-control {
+  border-radius: 8px 0 0 8px;
+}
+.auth-password-field button {
+  width: 52px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-left: 0;
+  border-radius: 0 8px 8px 0;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+}
+.auth-modal-submit,
+.auth-modal-google {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-weight: 800;
+}
+.auth-modal-submit {
+  border: 0;
+  background: #17a2b8;
+}
+.auth-modal-submit:hover {
+  background: #138496;
+}
+.auth-modal-google {
+  border: 2px solid #17a2b8;
+  background: transparent;
+  color: #17a2b8;
+}
+.auth-modal-google:hover {
+  background: rgba(23, 162, 184, 0.12);
+  color: #1dd1a1;
+}
+.google-mark {
+  display: inline-block;
+  margin-right: 0.6rem;
+  color: #4285f4;
+  font-size: 1.25rem;
+  font-weight: 900;
+}
+.auth-modal-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 1.5rem 0;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.82rem;
+}
+.auth-modal-divider::before,
+.auth-modal-divider::after {
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.15);
+  content: "";
+}
+.auth-modal-error {
+  margin-bottom: 1rem;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid rgba(255, 90, 95, 0.5);
+  border-radius: 8px;
+  background: rgba(255, 90, 95, 0.12);
+  color: #ffb8bd;
+  font-size: 0.88rem;
+}
+.auth-modal-switch {
+  margin: 1.5rem 0 0;
+  padding-top: 1.3rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.85);
+  text-align: center;
+  font-size: 0.9rem;
+}
+.auth-modal-switch button {
+  border: 0;
+  background: transparent;
+  color: #ffc107;
+  font-weight: 800;
+}
+@keyframes authModalIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@media (max-width: 480px) {
+  .auth-modal {
+    padding: 2.4rem 1.5rem 1.8rem;
+  }
+}

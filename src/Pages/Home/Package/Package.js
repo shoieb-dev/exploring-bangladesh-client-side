@@ -49,7 +49,7 @@ const Package = ({ pack }) => {
             </div>
 
             {/* CTA Button */}
-            <Link to={`/booking/${_id}`} className="d-grid text-decoration-none">
+            <Link to={`/packages/${_id}`} className="d-grid text-decoration-none">
               <Button variant="success" className="rounded-pill fw-bold py-2 shadow-sm">
                 View Itinerary & Book
               </Button>
