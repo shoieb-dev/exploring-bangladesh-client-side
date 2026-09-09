@@ -5,7 +5,7 @@ import "./Banner.css";
 
 const Banner = () => {
   return (
-    <div id="tourism-banner">
+    <div id="banner">
       <Carousel fade interval={4000}>
         <Carousel.Item>
           <img className="d-block w-100 hero-img" src="https://i.ibb.co/Tv9ktZ5/image.png" alt="Saint Martins Island" />
