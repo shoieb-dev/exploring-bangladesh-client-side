@@ -2,6 +2,22 @@
   text-align: center;
 }
 
-.body{
+.body {
   padding-top: 90px;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #afb4be48;
+}
+::-webkit-scrollbar-thumb {
+  background: #17a2b8;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ffc107;
 }
