@@ -59,42 +59,56 @@
   width: 100%;
 }
 
-/* User dropdown */
-.user-dropdown .dropdown-toggle {
-  border: 1px solid rgba(255, 193, 7, 0.3);
-  border-radius: 20px;
-  padding: 0.4rem 0.8rem;
-  transition: all 0.2s ease;
+/* Authenticated user actions */
+.header-user-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-left: 1rem;
 }
 
-.user-dropdown .dropdown-toggle:hover {
-  border-color: #ffc107;
-  background-color: rgba(255, 193, 7, 0.1);
-}
-
-.dropdown-menu {
+.dashboard-switch-link,
+.logout-button {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0.4rem 0.9rem !important;
   border-radius: 8px;
-  border: 1px solid rgba(255, 193, 7, 0.2);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  font-size: 0.86rem;
+  font-weight: 800;
+  text-decoration: none;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
-.dropdown-item {
-  transition: all 0.2s ease;
-  color: rgba(255, 255, 255, 0.9);
+.dashboard-switch-link {
+  border: 1px solid #17a2b8;
+  background: #17a2b8;
+  color: #fff !important;
 }
 
-.dropdown-item:hover {
-  background-color: rgba(255, 193, 7, 0.15);
+.dashboard-switch-link:hover {
+  border-color: #138496;
+  background: #138496;
+  color: #fff !important;
+  transform: translateY(-1px);
+}
+
+.logout-button {
+  border: 1px solid rgba(255, 193, 7, 0.65);
+  background: transparent;
   color: #ffc107;
+  cursor: pointer;
 }
 
-.logout-item {
-  background-color: rgba(255, 193, 7, 0.2);
-}
-
-.logout-item:hover {
-  background-color: rgba(255, 193, 7, 0.3);
-  color: #ffc107;
+.logout-button:hover {
+  border-color: #ffc107;
+  background: rgba(255, 193, 7, 0.12);
+  color: #ffca2c;
 }
 
 /* Login button */
@@ -155,5 +169,18 @@
   .login-link {
     width: 100%;
     margin-top: 0.5rem;
+  }
+
+  .header-user-actions {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-left: 0;
+    margin-top: 0.75rem;
+  }
+
+  .dashboard-switch-link,
+  .logout-button {
+    width: 100%;
   }
 }

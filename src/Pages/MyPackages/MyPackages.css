@@ -1,0 +1,194 @@
+.my-packages-shell {
+  min-height: calc(100vh - 74px);
+}
+
+.my-packages-header-icon {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  flex: 0 0 52px;
+  place-items: center;
+  border-radius: 14px;
+  background: #e6f7fa;
+  color: #0e7490;
+  font-size: 1.4rem;
+}
+
+.my-packages-panel {
+  margin-top: 2.2rem;
+  padding: 1.5rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
+}
+
+.my-packages-panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.my-packages-panel-kicker {
+  color: #0e7490;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.my-packages-panel-kicker svg {
+  margin-right: 0.4rem;
+}
+.my-packages-panel h2 {
+  margin: 0.45rem 0 0;
+  color: #102a43;
+  font-size: 1.4rem;
+}
+.my-packages-count {
+  padding: 0.45rem 0.7rem;
+  border-radius: 999px;
+  background: #eef8fa;
+  color: #0e7490;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+.my-packages-list {
+  display: grid;
+  gap: 0.75rem;
+  padding-top: 1.2rem;
+}
+.my-package-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.my-package-item:hover {
+  border-color: #8bd3dc;
+  box-shadow: 0 5px 14px rgba(15, 23, 42, 0.06);
+}
+.my-package-item-icon {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  place-items: center;
+  border-radius: 10px;
+  background: #e6f7fa;
+  color: #0e7490;
+}
+.my-package-item-details {
+  min-width: 0;
+  flex: 1;
+}
+.my-package-item-details h3 {
+  overflow: hidden;
+  margin: 0;
+  color: #1e293b;
+  font-size: 1rem;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.my-package-item-details span,
+.my-package-item-details small {
+  display: block;
+  margin-top: 0.3rem;
+  color: #64748b;
+  font-size: 0.8rem;
+}
+.my-package-delete {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid #fecaca;
+  border-radius: 7px;
+  background: #fff;
+  color: #b91c1c;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+.my-package-delete:hover:not(:disabled) {
+  background: #fef2f2;
+}
+.my-package-delete:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+.my-packages-error {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 0.85rem;
+}
+.my-packages-state {
+  display: flex;
+  min-height: 240px;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+}
+.my-packages-empty {
+  flex-direction: column;
+  text-align: center;
+}
+.my-packages-empty > svg {
+  margin-bottom: 0.8rem;
+  color: #8bcbd4;
+  font-size: 2rem;
+}
+.my-packages-empty h3 {
+  margin: 0;
+  color: #334e68;
+  font-size: 1.1rem;
+}
+.my-packages-empty p {
+  margin: 0.4rem 0 1.1rem;
+  color: #829ab1;
+  font-size: 0.88rem;
+}
+.my-packages-empty .dashboard-primary-action {
+  align-self: auto;
+}
+.my-packages-spinner {
+  width: 20px;
+  height: 20px;
+  margin-right: 0.7rem;
+  border: 2px solid #cbd5e1;
+  border-top-color: #17a2b8;
+  border-radius: 50%;
+  animation: packageSpinner 0.7s linear infinite;
+}
+
+@keyframes packageSpinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 640px) {
+  .my-packages-panel-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .my-package-item {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .my-package-delete {
+    margin-left: 3.4rem;
+  }
+}
