@@ -14,6 +14,7 @@ import Footer from "./Pages/Shared/Footer/Footer";
 import PackageAdding from "./Pages/PackageAdding/PackageAdding";
 import PackageManaging from "./Pages/PackageManaging/PackageManaging";
 import MyPackages from "./Pages/MyPackages/MyPackages";
+import Dashboard from "./Pages/Dashboard/Dashboard";
 
 function App() {
   return (
@@ -42,6 +43,10 @@ function App() {
             <Route path="/forgotPassword">
               <ForgotPassword></ForgotPassword>
             </Route>
+
+            <PrivateRoute path="/dashboard">
+              <Dashboard></Dashboard>
+            </PrivateRoute>
 
             <Route path={["/packages/:serviceId", "/booking/:serviceId"]}>
               <Booking></Booking>
