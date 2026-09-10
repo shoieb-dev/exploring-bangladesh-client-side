@@ -1,12 +1,12 @@
-import React from "react";
-import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Container, Nav, Navbar } from "react-bootstrap";
+import { Link, useLocation } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 import useAuth from "../../../hooks/useAuth";
 import "./Header.css";
 
 const Header = () => {
   const { user, logOut } = useAuth();
+  const location = useLocation();
 
   const navLinks = [
     { label: "Home", path: "/home#banner" },
@@ -15,11 +15,7 @@ const Header = () => {
     { label: "Testimonials", path: "/home#testimonial" },
   ];
 
-  const userDropdownItems = [
-    { label: "Add Package", path: "/addPackage" },
-    { label: "Manage Packages", path: "/managePackages" },
-    { label: "My Package", path: "/myPackages" },
-  ];
+  const isDashboardRoute = ["/dashboard", "/myPackages", "/addPackage", "/managePackages"].includes(location.pathname);
 
   return (
     <Navbar collapseOnSelect expand="lg" variant="dark" className="header" fixed="top" role="navigation">
@@ -47,22 +43,20 @@ const Header = () => {
               </Nav.Link>
             ))}
             {user?.email ? (
-              <NavDropdown
-                title={user?.displayName || "Account"}
-                menuVariant="dark"
-                className="user-dropdown ms-3"
-                id="user-nav-dropdown"
-              >
-                {userDropdownItems.map((item, index) => (
-                  <NavDropdown.Item key={index} as={Link} to={item.path}>
-                    {item.label}
-                  </NavDropdown.Item>
-                ))}
-                <NavDropdown.Divider />
-                <NavDropdown.Item onClick={logOut} className="logout-item">
+              <div className="header-user-actions">
+                {isDashboardRoute ? (
+                  <Nav.Link as={HashLink} smooth to="/home#banner" className="dashboard-switch-link">
+                    View site
+                  </Nav.Link>
+                ) : (
+                  <Nav.Link as={Link} to="/dashboard" className="dashboard-switch-link">
+                    Dashboard
+                  </Nav.Link>
+                )}
+                <button type="button" className="logout-button" onClick={logOut}>
                   Logout
-                </NavDropdown.Item>
-              </NavDropdown>
+                </button>
+              </div>
             ) : (
               <Nav.Link as={Link} to="/login" className="login-link ms-2">
                 Login
