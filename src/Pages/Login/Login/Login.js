@@ -12,7 +12,7 @@ const Login = () => {
   const { signInUsingGoogle, signInWithEmail, error: authError, setError } = useAuth();
   const location = useLocation();
   const history = useHistory();
-  const redirect_uri = location.state?.from || "/";
+  const redirect_uri = location.state?.from || "/dashboard";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

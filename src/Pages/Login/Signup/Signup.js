@@ -102,7 +102,7 @@ const Signup = () => {
       setSuccessMessage(message);
       setToast({ type: "success", message });
       setTimeout(() => {
-        history.push("/");
+        history.push("/dashboard");
       }, 1800);
     } catch (error) {
       const message = error.message || "Registration failed. Please try again.";
