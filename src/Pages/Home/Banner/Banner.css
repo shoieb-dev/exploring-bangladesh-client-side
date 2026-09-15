@@ -1,8 +1,21 @@
-/* Shared Styling */
-.hero-img {
+/* Wrapper reserves space so no layout shift while loading */
+.banner-wrapper {
+  position: relative;
+  min-height: 90vh;
+  background: #101418;
+  overflow: hidden;
+}
+
+/* Loader overlay */
+.banner-loader {
+  position: absolute;
+  inset: 0;
   height: 90vh;
-  object-fit: cover;
-  filter: brightness(0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #101418 0%, #1a2530 60%, #14342b 100%);
+  z-index: 5;
 }
 
 /* Tourism Site Hero Styling */
@@ -12,4 +25,84 @@
   border-radius: 16px;
   max-width: 700px;
   margin: 0 auto 50px auto;
+}
+
+/* Shared Styling */
+.hero-img {
+  height: 90vh;
+  object-fit: cover;
+  filter: brightness(0.85);
+}
+.hero-img-wrap {
+  position: relative;
+  height: 90vh;
+  background: #1a2530;
+  overflow: hidden;
+}
+
+.hero-img-skeleton,
+.hero-img-fallback,
+.banner-loader-shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, #1c2733 40%, #27394d 50%, #1c2733 60%);
+  background-size: 200% 100%;
+  animation: banner-shimmer 1.4s infinite linear;
+}
+
+.hero-img-fallback {
+  animation: none;
+  background: linear-gradient(135deg, #1a2530 0%, #2c4a3e 100%);
+}
+
+.hero-img.img-loading { opacity: 0; }
+.hero-img.img-loaded {
+  opacity: 1;
+  transition: opacity 0.6s ease-in;
+}
+
+.banner-loader-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: #fff;
+}
+
+.banner-loader-text { font-size: 1.25rem; letter-spacing: 0.3px; }
+.banner-loader-sub { color: rgba(255,255,255,0.7); }
+
+.banner-hidden { visibility: hidden; }
+.banner-visible {
+  visibility: visible;
+  animation: banner-fadein 0.5s ease-in;
+}
+
+.banner-mini-loader {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  background: rgba(0,0,0,0.55);
+  border-radius: 999px;
+  padding: 6px 14px;
+  backdrop-filter: blur(6px);
+}
+
+@keyframes banner-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes banner-fadein {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-img-skeleton,
+  .banner-loader-shimmer { animation: none; }
+  .hero-img.img-loaded, .banner-visible { animation: none; transition: none; }
 }
