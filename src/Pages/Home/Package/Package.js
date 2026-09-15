@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Card, Button, Badge } from "react-bootstrap";
+import { Card, Button, Badge, Spinner } from "react-bootstrap";
 import "./Package.css";
 
 const Package = ({ pack }) => {
@@ -15,12 +15,35 @@ const Package = ({ pack }) => {
     inclusions = ["Transport", "Guide", "Meals"],
   } = pack;
 
+  const [imgLoaded, setImgLoaded] = useState(false);
+  const [imgError, setImgError] = useState(false);
+
   return (
     <div className="p-3">
       <Card className="tour-card h-100 border-0 shadow-sm">
         {/* Image Container with Top Badge */}
         <div className="card-img-wrapper position-relative">
-          <Card.Img variant="top" src={img1} className="tour-card-img" />
+          {!imgLoaded && !imgError && (
+            <div className="card-img-loader" aria-hidden="true">
+              <Spinner animation="border" size="sm" variant="success" />
+            </div>
+          )}
+          {!imgError ? (
+            <Card.Img
+              variant="top"
+              src={img1}
+              alt={name}
+              loading="lazy"
+              decoding="async"
+              onLoad={() => setImgLoaded(true)}
+              onError={() => setImgError(true)}
+              className={`tour-card-img ${imgLoaded ? "img-loaded" : "img-loading"}`}
+            />
+          ) : (
+            <div className="card-img-fallback" role="img" aria-label={name}>
+              <span>🏝️</span>
+            </div>
+          )}
           <Badge bg="dark" className="position-absolute top-0 end-0 m-3 px-3 py-2 opacity-75">
             {difficulty}
           </Badge>
