@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { Container } from "react-bootstrap";
+import { Container, Spinner } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import AuthModal from "../../../components/AuthModal/AuthModal";
@@ -12,6 +12,11 @@ const Booking = () => {
   const { serviceId } = useParams();
   const { user } = useAuth();
   const [service, setService] = useState({});
+  const [fetching, setFetching] = useState(true);
+  const [fetchError, setFetchError] = useState(null);
+  const [heroLoaded, setHeroLoaded] = useState(false);
+  const [heroError, setHeroError] = useState(false);
+  const [imgState, setImgState] = useState({});
   const [showBooking, setShowBooking] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const bookingFormRef = useRef(null);
@@ -23,9 +28,36 @@ const Booking = () => {
   } = useForm();
 
   useEffect(() => {
+    let mounted = true;
+    setFetching(true);
+    setFetchError(null);
+    setHeroLoaded(false);
+    setHeroError(false);
+    setImgState({});
     fetch(`${servicesAPI}/${serviceId}`)
-      .then((res) => res.json())
-      .then((data) => setService(data));
+      .then((res) => {
+        if (!res.ok) throw new Error(`Failed to load package (${res.status})`);
+        return res.json();
+      })
+      .then((data) => {
+        if (!mounted) return;
+        setService(data || {});
+        // Preload hero so backgroundImage doesn't pop in blank
+        if (data?.img1) {
+          const hero = new Image();
+          hero.decoding = "async";
+          hero.src = data.img1;
+          hero.onload = () => mounted && setHeroLoaded(true);
+          hero.onerror = () => mounted && setHeroError(true);
+        } else {
+          setHeroError(true);
+        }
+      })
+      .catch((err) => mounted && setFetchError(err.message))
+      .finally(() => mounted && setFetching(false));
+    return () => {
+      mounted = false;
+    };
   }, [serviceId]);
 
   const revealBookingForm = () => {
@@ -57,9 +89,86 @@ const Booking = () => {
     { day: "Day 3", title: service.day3, description: service.description3, image: service.img3 },
   ];
 
+  const setLoaded = (day) => setImgState((p) => (p[day]?.loaded ? p : { ...p, [day]: { ...p[day], loaded: true } }));
+  const setError = (day) =>
+    setImgState((p) => ({ ...p, [day]: { loaded: true, error: true } }));
+
+  const heroReady = heroLoaded || heroError;
+
+  if (fetching) {
+    return (
+      <main className="package-detail" aria-busy="true" aria-live="polite">
+        <section className="package-hero package-hero-loading">
+          <div className="package-hero-overlay">
+            <Container>
+              <div className="package-hero-content">
+                <Spinner animation="border" variant="light" role="status">
+                  <span className="visually-hidden">Loading package...</span>
+                </Spinner>
+                <p className="mt-3 mb-0 fw-bold text-white">Loading your adventure…</p>
+              </div>
+            </Container>
+          </div>
+        </section>
+        <Container>
+          <section className="package-intro">
+            <div className="w-100">
+              <div className="booking-skeleton-line w-25 mb-2" />
+              <div className="booking-skeleton-line w-50 mb-2" />
+              <div className="booking-skeleton-line w-75" />
+            </div>
+          </section>
+          <section className="itinerary-timeline" aria-label="Loading itinerary">
+            {[0, 1, 2].map((i) => (
+              <article className="timeline-item" key={i}>
+                <div className="timeline-node">…</div>
+                <div className="timeline-content">
+                  <div className="timeline-image-wrap booking-img-loading">
+                    <Spinner animation="border" size="sm" variant="info" />
+                  </div>
+                  <div className="timeline-copy w-100">
+                    <div className="booking-skeleton-line w-25 mb-2" />
+                    <div className="booking-skeleton-line w-75 mb-2" />
+                    <div className="booking-skeleton-line w-100" />
+                  </div>
+                </div>
+              </article>
+            ))}
+          </section>
+        </Container>
+      </main>
+    );
+  }
+
+  if (fetchError) {
+    return (
+      <main className="package-detail">
+        <Container>
+          <div className="text-center py-5">
+            <p className="fw-bold mb-1">Could not load this package</p>
+            <p className="text-muted small mb-3">{fetchError}</p>
+            <button type="button" className="package-cta" onClick={() => window.location.reload()}>
+              Retry
+            </button>
+          </div>
+        </Container>
+      </main>
+    );
+  }
+
   return (
     <main className="package-detail">
-      <section className="package-hero" style={{ backgroundImage: `url(${service.img1})` }}>
+      <section
+        className={`package-hero ${heroReady ? "hero-ready" : "package-hero-loading"}`}
+        style={heroLoaded && service.img1 ? { backgroundImage: `url(${service.img1})` } : undefined}
+      >
+        {!heroReady && (
+          <div className="package-hero-loader" aria-hidden="true">
+            <Spinner animation="border" variant="light" role="status">
+              <span className="visually-hidden">Loading cover photo...</span>
+            </Spinner>
+          </div>
+        )}
         <div className="package-hero-overlay">
           <Container>
             <div className="package-hero-content">
@@ -99,21 +208,46 @@ const Booking = () => {
         </section>
 
         <section className="itinerary-timeline" aria-label="Package itinerary">
-          {itinerary.map((item) => (
-            <article className="timeline-item" key={item.day}>
-              <div className="timeline-node">{item.day.replace("Day ", "")}</div>
-              <div className="timeline-content">
-                <div className="timeline-image-wrap">
-                  <img src={item.image} alt={item.title || `${item.day} itinerary`} />
+          {itinerary.map((item) => {
+            const st = imgState[item.day] || {};
+            const showLoader = !st.loaded && item.image;
+            return (
+              <article className="timeline-item" key={item.day}>
+                <div className="timeline-node">{item.day.replace("Day ", "")}</div>
+                <div className="timeline-content">
+                  <div className={`timeline-image-wrap ${showLoader ? "booking-img-loading" : ""}`}>
+                    {showLoader && (
+                      <span className="booking-img-spinner" aria-hidden="true">
+                        <Spinner animation="border" size="sm" variant="info" />
+                      </span>
+                    )}
+                    {item.image && !st.error ? (
+                      <img
+                        src={item.image}
+                        alt={item.title || `${item.day} itinerary`}
+                        loading="lazy"
+                        decoding="async"
+                        onLoad={() => setLoaded(item.day)}
+                        onError={() => setError(item.day)}
+                        className={st.loaded ? "booking-img-loaded" : "booking-img-hidden"}
+                      />
+                    ) : (
+                      !showLoader && (
+                        <div className="booking-img-fallback" role="img" aria-label={item.title || item.day}>
+                          <span>🏝️</span>
+                        </div>
+                      )
+                    )}
+                  </div>
+                  <div className="timeline-copy">
+                    <span className="timeline-day">{item.day}</span>
+                    <h3>{item.title}</h3>
+                    <p>{item.description}</p>
+                  </div>
                 </div>
-                <div className="timeline-copy">
-                  <span className="timeline-day">{item.day}</span>
-                  <h3>{item.title}</h3>
-                  <p>{item.description}</p>
-                </div>
-              </div>
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </section>
 
         {user?.email ? (

@@ -10,6 +10,25 @@
   background-position: center;
   background-size: cover;
   background-color: #0f172a;
+  position: relative;
+}
+
+.package-hero-loading {
+  background: linear-gradient(100deg, #0f172a 40%, #1e3a4a 50%, #0f172a 60%);
+  background-size: 200% 100%;
+  animation: booking-shimmer 1.4s infinite linear;
+}
+
+.package-hero.hero-ready {
+  animation: none;
+}
+
+.package-hero-loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .package-hero-overlay {
@@ -169,12 +188,69 @@
   overflow: hidden;
   aspect-ratio: 16 / 9;
   border-radius: 10px;
+  position: relative;
+  background: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .timeline-image-wrap img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.35s ease;
+  transition:
+    transform 0.35s ease,
+    opacity 0.5s ease;
+}
+.booking-img-hidden {
+  opacity: 0;
+}
+.booking-img-loaded {
+  opacity: 1;
+}
+.booking-img-loading {
+  background: linear-gradient(100deg, #e2e8f0 40%, #cbd5e1 50%, #e2e8f0 60%);
+  background-size: 200% 100%;
+  animation: booking-shimmer 1.4s infinite linear;
+}
+.booking-img-spinner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.booking-img-fallback {
+  width: 100%;
+  height: 100%;
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  background: linear-gradient(135deg, #e2e8f0 0%, #bae6fd 100%);
+}
+.booking-skeleton-line {
+  height: 14px;
+  border-radius: 6px;
+  background: linear-gradient(100deg, #e2e8f0 40%, #cbd5e1 50%, #e2e8f0 60%);
+  background-size: 200% 100%;
+  animation: booking-shimmer 1.4s infinite linear;
+}
+@keyframes booking-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .package-hero-loading,
+  .booking-img-loading,
+  .booking-skeleton-line {
+    animation: none;
+  }
 }
 .timeline-content:hover img {
   transform: scale(1.05);
