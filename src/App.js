@@ -10,6 +10,7 @@ import ForgotPassword from "./Pages/Login/ForgotPassword/ForgotPassword";
 import Header from "./Pages/Shared/Header/Header";
 import AuthProvider from "./contexts/AuthProvider";
 import PrivateRoute from "./Pages/Login/PrivateRoute/PrivateRoute";
+import PublicRoute from "./Pages/Login/PublicRoute/PublicRoute";
 import Footer from "./Pages/Shared/Footer/Footer";
 import PackageAdding from "./Pages/PackageAdding/PackageAdding";
 import PackageManaging from "./Pages/PackageManaging/PackageManaging";
@@ -32,17 +33,17 @@ function App() {
               <Home></Home>
             </Route>
 
-            <Route path="/login">
+            <PublicRoute path="/login">
               <Login></Login>
-            </Route>
+            </PublicRoute>
 
-            <Route path="/signup">
+            <PublicRoute path="/signup">
               <Signup></Signup>
-            </Route>
+            </PublicRoute>
 
-            <Route path="/forgotPassword">
+            <PublicRoute path="/forgotPassword">
               <ForgotPassword></ForgotPassword>
-            </Route>
+            </PublicRoute>
 
             <PrivateRoute path="/dashboard">
               <Dashboard></Dashboard>
