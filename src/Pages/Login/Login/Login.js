@@ -42,8 +42,12 @@ const Login = () => {
       })
       .catch((err) => {
         setIsLoading(false);
+        // User closed the Google popup without picking an account — not an error.
+        if (err?.code === "auth/popup-closed-by-user" || err?.code === "auth/cancelled-popup-request") {
+          return;
+        }
         setError2("Google login failed. Please try again.");
-        showToast("error", "Google login failed. Please try again.");
+        showToast("error", err?.message || "Google login failed. Please try again.");
         console.error("Google login error:", err);
       });
   };
