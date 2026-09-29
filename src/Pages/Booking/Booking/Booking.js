@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import AuthModal from "../../../components/AuthModal/AuthModal";
 import useAuth from "../../../hooks/useAuth";
-import { bookingsAPI, servicesAPI } from "../../../services/api";
+import { bookingsAPI, packagesAPI } from "../../../services/api";
 import "./Booking.css";
 
 const Booking = () => {
@@ -34,7 +34,7 @@ const Booking = () => {
     setHeroLoaded(false);
     setHeroError(false);
     setImgState({});
-    fetch(`${servicesAPI}/${serviceId}`)
+    fetch(`${packagesAPI}/${serviceId}`)
       .then((res) => {
         if (!res.ok) throw new Error(`Failed to load package (${res.status})`);
         return res.json();
@@ -90,8 +90,7 @@ const Booking = () => {
   ];
 
   const setLoaded = (day) => setImgState((p) => (p[day]?.loaded ? p : { ...p, [day]: { ...p[day], loaded: true } }));
-  const setError = (day) =>
-    setImgState((p) => ({ ...p, [day]: { loaded: true, error: true } }));
+  const setError = (day) => setImgState((p) => ({ ...p, [day]: { loaded: true, error: true } }));
 
   const heroReady = heroLoaded || heroError;
 
