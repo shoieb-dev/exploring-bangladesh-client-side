@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { servicesAPI } from "../../services/api";
+import { packagesAPI } from "../../services/api";
 import "../Dashboard/Dashboard.css";
 import DashboardSidebar from "../Dashboard/DashboardSidebar";
 import "./PackageAdding.css";
@@ -22,7 +22,7 @@ const PackageAdding = () => {
     setStatus({ type: "", message: "" });
     try {
       setIsSaving(true);
-      const response = await axios.post(servicesAPI, data);
+      const response = await axios.post(packagesAPI, data);
       if (!response.data.insertedId) throw new Error("The package could not be created.");
       reset();
       setStatus({ type: "success", message: "Package published successfully." });

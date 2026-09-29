@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Spinner } from "react-bootstrap";
 import useAuth from "../../../hooks/useAuth";
-import { servicesAPI } from "../../../services/api";
+import { packagesAPI } from "../../../services/api";
 import Package from "../Package/Package";
 import "./Packages.css";
 
@@ -15,7 +15,7 @@ const Packages = () => {
     let mounted = true;
     setFetching(true);
     setFetchError(null);
-    fetch(servicesAPI)
+    fetch(packagesAPI)
       .then((res) => {
         if (!res.ok) throw new Error(`Failed to load packages (${res.status})`);
         return res.json();

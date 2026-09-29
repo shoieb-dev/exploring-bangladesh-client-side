@@ -4,7 +4,7 @@ import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
-import { servicesAPI } from "../../services/api";
+import { packagesAPI } from "../../services/api";
 import "../Dashboard/Dashboard.css";
 import DashboardSidebar from "../Dashboard/DashboardSidebar";
 import "./PackageManaging.css";
@@ -22,7 +22,7 @@ const PackageManaging = () => {
     const loadPackages = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch(servicesAPI);
+        const response = await fetch(packagesAPI);
         if (!response.ok) throw new Error("Unable to load packages.");
         const data = await response.json();
         if (isMounted) setPackages(Array.isArray(data) ? data : []);
@@ -50,7 +50,7 @@ const PackageManaging = () => {
 
     try {
       setDeletingId(id);
-      const response = await axios.delete(`${servicesAPI}/${id}`);
+      const response = await axios.delete(`${packagesAPI}/${id}`);
       if (response.data.deletedCount === 0) throw new Error("The package could not be deleted.");
       setPackages((current) => current.filter((item) => item._id !== id));
     } catch (deleteError) {

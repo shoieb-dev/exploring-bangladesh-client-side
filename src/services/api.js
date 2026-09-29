@@ -10,6 +10,6 @@ const API_BASE_URL = serverUrl;
 //     myApartments: `${API_BASE_URL}/myApartments`,
 // };
 
-export const servicesAPI = `${API_BASE_URL}/services`;
+export const packagesAPI = `${API_BASE_URL}/packages`;
 export const bookingsAPI = `${API_BASE_URL}/bookings`;
 export const myPackagesAPI = `${API_BASE_URL}/myPackages`;
