@@ -20,13 +20,20 @@ const MyPackages = () => {
     let isMounted = true;
 
     const loadPackages = async () => {
-      if (!user?.email) return;
+      if (!user?.email) {
+        if (isMounted) setIsLoading(false);
+        return;
+      }
       try {
         setIsLoading(true);
+        setError("");
         const response = await fetch(`${myPackagesAPI}/${user.email}`);
         if (!response.ok) throw new Error("Unable to load your packages.");
         const data = await response.json();
-        if (isMounted) setPackages(Array.isArray(data) ? data : []);
+        // API returns { success, count, data: [...] } — unwrap it.
+        // Keep backward compat if API ever returns a plain array.
+        const list = Array.isArray(data) ? data : Array.isArray(data?.data) ? data.data : [];
+        if (isMounted) setPackages(list);
       } catch (loadError) {
         if (isMounted) setError(loadError.message);
       } finally {

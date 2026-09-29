@@ -21,7 +21,11 @@ const Packages = () => {
         return res.json();
       })
       .then((data) => {
-        if (mounted) setPackages(Array.isArray(data) ? data : []);
+        if (!mounted) return;
+        // API returns { success, count, data: [...] } — unwrap it.
+        // Keep backward compat if API ever returns a plain array.
+        const list = Array.isArray(data) ? data : Array.isArray(data?.data) ? data.data : [];
+        setPackages(list);
       })
       .catch((err) => {
         if (mounted) setFetchError(err.message);

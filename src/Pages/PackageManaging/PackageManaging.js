@@ -9,6 +9,50 @@ import "../Dashboard/Dashboard.css";
 import DashboardSidebar from "../Dashboard/DashboardSidebar";
 import "./PackageManaging.css";
 
+const ManagePackageRow = ({ pack, deleting, onDelete }) => {
+  const [imgLoaded, setImgLoaded] = useState(false);
+  const [imgError, setImgError] = useState(false);
+
+  return (
+    <article className="manage-package-row">
+      <div className={`manage-package-image ${!imgLoaded && !imgError ? "manage-img-loading" : ""}`}>
+        {!imgLoaded && !imgError && pack.img1 && <span className="manage-spinner manage-img-spinner" aria-hidden="true" />}
+        {pack.img1 && !imgError ? (
+          <img
+            src={pack.img1}
+            alt={pack.name || "Package cover"}
+            loading="lazy"
+            decoding="async"
+            onLoad={() => setImgLoaded(true)}
+            onError={() => setImgError(true)}
+            className={imgLoaded ? "manage-img-loaded" : "manage-img-hidden"}
+          />
+        ) : (
+          (imgError || !pack.img1) && (
+            <span className="manage-img-fallback" role="img" aria-label={pack.name || "Package"}>
+              🗺️
+            </span>
+          )
+        )}
+      </div>
+      <div className="manage-package-details">
+        <h3>{pack.name}</h3>
+        <span>{pack.duration || "Itinerary available"}</span>
+        {pack.price && <small>BDT {pack.price} per person</small>}
+      </div>
+      <button
+        type="button"
+        className="manage-delete-button"
+        onClick={() => onDelete(pack._id)}
+        disabled={deleting}
+      >
+        <FontAwesomeIcon icon={faTrash} />
+        {deleting ? "Deleting..." : "Delete"}
+      </button>
+    </article>
+  );
+};
+
 const PackageManaging = () => {
   const [packages, setPackages] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -22,10 +66,14 @@ const PackageManaging = () => {
     const loadPackages = async () => {
       try {
         setIsLoading(true);
+        setError("");
         const response = await fetch(packagesAPI);
         if (!response.ok) throw new Error("Unable to load packages.");
         const data = await response.json();
-        if (isMounted) setPackages(Array.isArray(data) ? data : []);
+        // API returns { success, count, data: [...] } — unwrap it.
+        // Keep backward compat if API ever returns a plain array.
+        const list = Array.isArray(data) ? data : Array.isArray(data?.data) ? data.data : [];
+        if (isMounted) setPackages(list);
       } catch (loadError) {
         if (isMounted) setError(loadError.message);
       } finally {
@@ -116,25 +164,7 @@ const PackageManaging = () => {
           ) : (
             <div className="manage-package-list">
               {visiblePackages.map((pack) => (
-                <article className="manage-package-row" key={pack._id}>
-                  <div className="manage-package-image">
-                    <img src={pack.img1} alt="" />
-                  </div>
-                  <div className="manage-package-details">
-                    <h3>{pack.name}</h3>
-                    <span>{pack.duration || "Itinerary available"}</span>
-                    {pack.price && <small>BDT {pack.price} per person</small>}
-                  </div>
-                  <button
-                    type="button"
-                    className="manage-delete-button"
-                    onClick={() => handleDelete(pack._id)}
-                    disabled={deletingId === pack._id}
-                  >
-                    <FontAwesomeIcon icon={faTrash} />
-                    {deletingId === pack._id ? "Deleting..." : "Delete"}
-                  </button>
-                </article>
+                <ManagePackageRow key={pack._id} pack={pack} deleting={deletingId === pack._id} onDelete={handleDelete} />
               ))}
             </div>
           )}

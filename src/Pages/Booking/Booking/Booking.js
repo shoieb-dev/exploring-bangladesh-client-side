@@ -41,12 +41,15 @@ const Booking = () => {
       })
       .then((data) => {
         if (!mounted) return;
-        setService(data || {});
+        // Single-package API returns { success, data: {...} } — unwrap it.
+        // Keep backward compat if API ever returns the object directly.
+        const pkg = data?.data && typeof data.data === "object" ? data.data : data;
+        setService(pkg || {});
         // Preload hero so backgroundImage doesn't pop in blank
-        if (data?.img1) {
+        if (pkg?.img1) {
           const hero = new Image();
           hero.decoding = "async";
-          hero.src = data.img1;
+          hero.src = pkg.img1;
           hero.onload = () => mounted && setHeroLoaded(true);
           hero.onerror = () => mounted && setHeroError(true);
         } else {
