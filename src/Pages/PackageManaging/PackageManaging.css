@@ -130,11 +130,48 @@
   overflow: hidden;
   border-radius: 7px;
   background: #e6f7fa;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .manage-package-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: opacity 0.4s ease;
+}
+.manage-img-hidden {
+  opacity: 0;
+}
+.manage-img-loaded {
+  opacity: 1;
+}
+.manage-img-loading {
+  background: linear-gradient(100deg, #e6f7fa 40%, #cdeef4 50%, #e6f7fa 60%);
+  background-size: 200% 100%;
+  animation: manageShimmer 1.4s infinite linear;
+}
+.manage-img-spinner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+}
+.manage-img-fallback {
+  font-size: 1.5rem;
+}
+@keyframes manageShimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .manage-img-loading {
+    animation: none;
+  }
 }
 .manage-package-details {
   min-width: 0;
