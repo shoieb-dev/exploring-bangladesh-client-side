@@ -14,6 +14,7 @@ import PublicRoute from "./Pages/Login/PublicRoute/PublicRoute";
 import Footer from "./Pages/Shared/Footer/Footer";
 import PackageAdding from "./Pages/PackageAdding/PackageAdding";
 import PackageManaging from "./Pages/PackageManaging/PackageManaging";
+import ManageBookings from "./Pages/ManageBookings/ManageBookings";
 import MyPackages from "./Pages/MyPackages/MyPackages";
 import Dashboard from "./Pages/Dashboard/Dashboard";
 
@@ -63,6 +64,10 @@ function App() {
 
             <PrivateRoute path="/managePackages">
               <PackageManaging></PackageManaging>
+            </PrivateRoute>
+
+            <PrivateRoute path="/manageBookings">
+              <ManageBookings></ManageBookings>
             </PrivateRoute>
 
             <Route path="*">
