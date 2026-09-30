@@ -1,5 +1,6 @@
 import {
   faArrowRight,
+  faCalendarCheck,
   faCompass,
   faMapMarkedAlt,
   faPlus,
@@ -59,6 +60,13 @@ const DashboardSidebar = () => {
             >
               <FontAwesomeIcon icon={faMapMarkedAlt} />
               Manage Packages
+            </Link>
+            <Link
+              to="/manageBookings"
+              className={`dashboard-nav-item ${location.pathname === "/manageBookings" ? "active" : ""}`}
+            >
+              <FontAwesomeIcon icon={faCalendarCheck} />
+              Manage Bookings
             </Link>
           </>
         )}

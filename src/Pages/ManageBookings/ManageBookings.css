@@ -1,0 +1,205 @@
+.manage-bookings-shell {
+  min-height: calc(100vh - 74px);
+}
+.manage-bookings-header-icon {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  flex: 0 0 52px;
+  place-items: center;
+  border-radius: 14px;
+  background: #e6f7fa;
+  color: #0e7490;
+  font-size: 1.4rem;
+}
+.manage-bookings-panel {
+  margin-top: 2.2rem;
+  padding: 1.5rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
+}
+.manage-bookings-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid #edf2f7;
+}
+.manage-bookings-kicker {
+  color: #0e7490;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.manage-bookings-toolbar h2 {
+  margin: 0.45rem 0 0;
+  color: #102a43;
+  font-size: 1.35rem;
+}
+.manage-bookings-toolbar h2 span {
+  display: inline-grid;
+  min-width: 1.7rem;
+  height: 1.7rem;
+  margin-left: 0.35rem;
+  padding: 0 0.35rem;
+  place-items: center;
+  border-radius: 999px;
+  background: #eef8fa;
+  color: #0e7490;
+  font-size: 0.75rem;
+  vertical-align: middle;
+}
+.manage-bookings-search {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  max-width: 460px;
+  margin: 1.2rem 0 0;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #829ab1;
+}
+.manage-bookings-search:focus-within {
+  border-color: #17a2b8;
+  box-shadow: 0 0 0 3px rgba(23, 162, 184, 0.12);
+}
+.manage-bookings-search input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #102a43;
+  font: inherit;
+  font-size: 0.85rem;
+}
+.manage-bookings-error {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 0.85rem;
+}
+.manage-bookings-list {
+  display: grid;
+  gap: 0.75rem;
+  padding-top: 1.2rem;
+}
+.manage-booking-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.manage-booking-row:hover {
+  border-color: #8bd3dc;
+  box-shadow: 0 5px 14px rgba(15, 23, 42, 0.06);
+}
+.manage-booking-icon {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  place-items: center;
+  border-radius: 10px;
+  background: #e6f7fa;
+  color: #0e7490;
+}
+.manage-booking-details {
+  min-width: 0;
+  flex: 1;
+}
+.manage-booking-details h3 {
+  overflow: hidden;
+  margin: 0;
+  color: #1e293b;
+  font-size: 0.98rem;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.manage-booking-details span {
+  display: block;
+  margin-top: 0.3rem;
+  color: #64748b;
+  font-size: 0.78rem;
+}
+.manage-booking-details span svg {
+  margin: 0 0.25rem;
+  color: #8bcbd4;
+  font-size: 0.7rem;
+}
+.manage-booking-delete {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid #fecaca;
+  border-radius: 7px;
+  background: #fff;
+  color: #b91c1c;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+.manage-booking-delete:hover:not(:disabled) {
+  background: #fef2f2;
+}
+.manage-booking-delete:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+.manage-bookings-state {
+  display: flex;
+  min-height: 230px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  color: #64748b;
+  font-size: 0.88rem;
+}
+.manage-bookings-empty {
+  flex-direction: column;
+  text-align: center;
+}
+.manage-bookings-empty > svg {
+  margin-bottom: 0.8rem;
+  color: #8bcbd4;
+  font-size: 2rem;
+}
+.manage-bookings-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #cbd5e1;
+  border-top-color: #17a2b8;
+  border-radius: 50%;
+  animation: allBookingsSpinner 0.7s linear infinite;
+}
+@keyframes allBookingsSpinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (max-width: 640px) {
+  .manage-bookings-header-icon {
+    display: none;
+  }
+  .manage-booking-row {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .manage-booking-delete {
+    margin-left: 3.4rem;
+  }
+}
