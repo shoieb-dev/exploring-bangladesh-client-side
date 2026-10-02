@@ -15,7 +15,9 @@ const Header = () => {
     { label: "Testimonials", path: "/home#testimonial" },
   ];
 
-  const isDashboardRoute = ["/dashboard", "/myPackages", "/addPackage", "/managePackages"].includes(location.pathname);
+  const isDashboardRoute = ["/dashboard", "/myPackages", "/addPackage", "/managePackages", "/manageBookings"].includes(
+    location.pathname
+  );
 
   return (
     <Navbar collapseOnSelect expand="lg" variant="dark" className="header" fixed="top" role="navigation">

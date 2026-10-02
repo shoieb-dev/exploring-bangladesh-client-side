@@ -11,13 +11,13 @@ import {
 } from "firebase/auth";
 import { useState, useEffect, useCallback } from "react";
 import initializeAuthentication from "./../Pages/Login/Firebase/firebase.init";
+import { API_BASE_URL } from "../services/api";
 
 initializeAuthentication();
 
-// Backend base URL — set in frontend .env:
-// REACT_APP_API_URL=https://your-server.vercel.app  (prod)
-// REACT_APP_API_URL=http://localhost:5000          (local dev)
-const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000";
+// Reuse the same normalized backend base URL as the rest of the app.
+// Falls back to localhost:5000 when VITE_API_URL is not set.
+const API_BASE = API_BASE_URL || "http://localhost:5000";
 
 const useFirebase = () => {
   const [user, setUser] = useState({});

@@ -90,6 +90,12 @@
 .dashboard-nav-item.active {
   box-shadow: inset 3px 0 #ffc107;
 }
+.dashboard-nav-pending {
+  opacity: 0.6;
+  font-size: 0.8rem;
+  font-style: italic;
+  pointer-events: none;
+}
 .dashboard-nav-item:hover svg,
 .dashboard-nav-item.active svg {
   color: #17a2b8;
