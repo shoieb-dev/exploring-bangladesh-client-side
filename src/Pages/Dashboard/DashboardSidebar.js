@@ -13,12 +13,24 @@ import { HashLink } from "react-router-hash-link";
 import useAuth from "../../hooks/useAuth";
 
 const DashboardSidebar = () => {
-  const { user } = useAuth();
+  const { user, isAdmin, roleLoading } = useAuth();
   const location = useLocation();
-  const workspaceItems = [
+
+  // Normal users: travel workspace only.
+  const travelerItems = [
     { label: "Overview", path: "/dashboard", icon: faTachometerAlt },
     { label: "My Packages", path: "/myPackages", icon: faSuitcaseRolling },
   ];
+
+  // Admins: management workspace only.
+  const adminItems = [
+    { label: "Overview", path: "/dashboard", icon: faTachometerAlt },
+    { label: "Add Package", path: "/addPackage", icon: faPlus },
+    { label: "Manage Packages", path: "/managePackages", icon: faMapMarkedAlt },
+    { label: "Manage Bookings", path: "/manageBookings", icon: faCalendarCheck },
+  ];
+
+  const items = isAdmin ? adminItems : travelerItems;
 
   return (
     <aside className="dashboard-sidebar" aria-label="Dashboard navigation">
@@ -27,14 +39,14 @@ const DashboardSidebar = () => {
           <FontAwesomeIcon icon={faCompass} />
         </div>
         <div>
-          <strong>Traveler space</strong>
+          <strong>{isAdmin ? "Admin console" : "Traveler space"}</strong>
           <span>X-Ploring Bangladesh</span>
         </div>
       </div>
 
       <nav className="dashboard-nav">
-        <span className="dashboard-nav-label">Workspace</span>
-        {workspaceItems.map((item) => (
+        <span className="dashboard-nav-label">{isAdmin ? "Administration" : "Workspace"}</span>
+        {items.map((item) => (
           <Link
             key={item.path}
             to={item.path}
@@ -44,31 +56,11 @@ const DashboardSidebar = () => {
             {item.label}
           </Link>
         ))}
-        {user?.email && (
-          <>
-            <span className="dashboard-nav-label dashboard-nav-label-spaced">Administration</span>
-            <Link
-              to="/addPackage"
-              className={`dashboard-nav-item ${location.pathname === "/addPackage" ? "active" : ""}`}
-            >
-              <FontAwesomeIcon icon={faPlus} />
-              Add Package
-            </Link>
-            <Link
-              to="/managePackages"
-              className={`dashboard-nav-item ${location.pathname === "/managePackages" ? "active" : ""}`}
-            >
-              <FontAwesomeIcon icon={faMapMarkedAlt} />
-              Manage Packages
-            </Link>
-            <Link
-              to="/manageBookings"
-              className={`dashboard-nav-item ${location.pathname === "/manageBookings" ? "active" : ""}`}
-            >
-              <FontAwesomeIcon icon={faCalendarCheck} />
-              Manage Bookings
-            </Link>
-          </>
+        {/* While role is resolving, keep layout stable but hint at pending state */}
+        {roleLoading && user?.email && (
+          <span className="dashboard-nav-item dashboard-nav-pending" aria-live="polite">
+            Checking access…
+          </span>
         )}
       </nav>
 

@@ -10,6 +10,7 @@ import ForgotPassword from "./Pages/Login/ForgotPassword/ForgotPassword";
 import Header from "./Pages/Shared/Header/Header";
 import AuthProvider from "./contexts/AuthProvider";
 import PrivateRoute from "./Pages/Login/PrivateRoute/PrivateRoute";
+import AdminRoute from "./Pages/Login/AdminRoute/AdminRoute";
 import PublicRoute from "./Pages/Login/PublicRoute/PublicRoute";
 import Footer from "./Pages/Shared/Footer/Footer";
 import PackageAdding from "./Pages/PackageAdding/PackageAdding";
@@ -58,17 +59,17 @@ function App() {
               <MyPackages></MyPackages>
             </PrivateRoute>
 
-            <PrivateRoute path="/addPackage">
+            <AdminRoute path="/addPackage">
               <PackageAdding></PackageAdding>
-            </PrivateRoute>
+            </AdminRoute>
 
-            <PrivateRoute path="/managePackages">
+            <AdminRoute path="/managePackages">
               <PackageManaging></PackageManaging>
-            </PrivateRoute>
+            </AdminRoute>
 
-            <PrivateRoute path="/manageBookings">
+            <AdminRoute path="/manageBookings">
               <ManageBookings></ManageBookings>
-            </PrivateRoute>
+            </AdminRoute>
 
             <Route path="*">
               <NotFound></NotFound>

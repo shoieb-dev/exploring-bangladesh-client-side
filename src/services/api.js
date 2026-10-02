@@ -1,6 +1,15 @@
+const normalizeBaseUrl = (url) => (url || "").trim().replace(/^["']|["']$/g, "").replace(/\/+$/, "");
+
+// Single source of truth for the backend URL.
+// Set VITE_API_URL in .env (local + Firebase hosting env):
+//   VITE_API_URL=https://tourism-website-server-site.vercel.app
 const serverUrl = "https://tourism-website-server-site.vercel.app";
 const localUrl = "http://localhost:5000";
-const API_BASE_URL = serverUrl;
+const envUrl = typeof import.meta !== "undefined" ? import.meta.env?.VITE_API_URL : "";
+export const API_BASE_URL = normalizeBaseUrl(envUrl) || serverUrl;
+
+// Leave localUrl available for local dev override:
+// export const API_BASE_URL = normalizeBaseUrl(envUrl) || localUrl;
 
 // export const API_ENDPOINTS = {
 //     houses: `${API_BASE_URL}/houses`,
