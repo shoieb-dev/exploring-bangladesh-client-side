@@ -15,7 +15,7 @@ const Header = () => {
     { label: "Testimonials", path: "/home#testimonial" },
   ];
 
-  const isDashboardRoute = ["/dashboard", "/myPackages", "/addPackage", "/managePackages", "/manageBookings"].includes(
+  const isDashboardRoute = ["/dashboard", "/myPackages", "/addPackage", "/managePackages", "/manageBookings", "/userList"].includes(
     location.pathname
   );
 

@@ -16,6 +16,7 @@ import Footer from "./Pages/Shared/Footer/Footer";
 import PackageAdding from "./Pages/PackageAdding/PackageAdding";
 import PackageManaging from "./Pages/PackageManaging/PackageManaging";
 import ManageBookings from "./Pages/ManageBookings/ManageBookings";
+import UserList from "./Pages/UserList/UserList";
 import MyPackages from "./Pages/MyPackages/MyPackages";
 import Dashboard from "./Pages/Dashboard/Dashboard";
 
@@ -69,6 +70,10 @@ function App() {
 
             <AdminRoute path="/manageBookings">
               <ManageBookings></ManageBookings>
+            </AdminRoute>
+
+            <AdminRoute path="/userList">
+              <UserList></UserList>
             </AdminRoute>
 
             <Route path="*">
