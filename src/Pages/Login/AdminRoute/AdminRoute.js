@@ -1,16 +1,12 @@
 import React from 'react';
-import { Spinner } from 'react-bootstrap';
 import { Redirect, Route } from 'react-router';
 import useAuth from './../../../hooks/useAuth';
+import TravelLoader from '../../../components/TravelLoader/TravelLoader';
 
 const AdminRoute = ({ children, ...rest }) => {
     const { user, isLoading, isAdmin, roleLoading } = useAuth();
     if (isLoading || roleLoading) {
-        return (
-            <div className="d-flex justify-content-center align-items-center py-5">
-                <Spinner animation="border" variant="info" />
-            </div>
-        );
+        return <TravelLoader message="Checking admin access…" />;
     }
     return (
         <Route

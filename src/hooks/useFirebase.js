@@ -192,20 +192,24 @@ const useFirebase = () => {
   };
 
   // observe user state change
+  // NOTE: never block isLoading on backend calls. Public pages (Home)
+  // must render instantly; role sync happens in the background.
   useEffect(() => {
-    const unsubscribed = onAuthStateChanged(auth, async (fbUser) => {
+    const unsubscribed = onAuthStateChanged(auth, (fbUser) => {
       if (fbUser) {
         setUser(fbUser);
-        // sync on refresh/login-persist + load role for gating
-        await syncUserToBackend(fbUser);
-        await refreshRole(fbUser.email);
+        setIsLoading(false);
+        // background sync — must not delay UI
+        syncUserToBackend(fbUser).catch(() => {});
+        refreshRole(fbUser.email).catch(() => {});
       } else {
         setUser({});
         setBackendUser(null);
         setRole("user");
         setIsAdmin(false);
+        setRoleLoading(false);
+        setIsLoading(false);
       }
-      setIsLoading(false);
     });
     return () => unsubscribed;
     // eslint-disable-next-line react-hooks/exhaustive-deps
