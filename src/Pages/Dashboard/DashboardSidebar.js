@@ -6,6 +6,7 @@ import {
   faPlus,
   faSuitcaseRolling,
   faTachometerAlt,
+  faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useLocation } from "react-router-dom";
@@ -28,6 +29,7 @@ const DashboardSidebar = () => {
     { label: "Add Package", path: "/addPackage", icon: faPlus },
     { label: "Manage Packages", path: "/managePackages", icon: faMapMarkedAlt },
     { label: "Manage Bookings", path: "/manageBookings", icon: faCalendarCheck },
+    { label: "User List", path: "/userList", icon: faUsers },
   ];
 
   const items = isAdmin ? adminItems : travelerItems;

@@ -22,3 +22,6 @@ export const API_BASE_URL = normalizeBaseUrl(envUrl) || serverUrl;
 export const packagesAPI = `${API_BASE_URL}/packages`;
 export const bookingsAPI = `${API_BASE_URL}/bookings`;
 export const myPackagesAPI = `${API_BASE_URL}/myPackages`;
+export const usersAPI = `${API_BASE_URL}/api/users`;
+export const usersFromBookingsAPI = `${API_BASE_URL}/api/users/from-bookings`;
+export const userRoleAPI = (email) => `${API_BASE_URL}/api/users/me?email=${encodeURIComponent(email)}`;
