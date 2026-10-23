@@ -4,6 +4,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { packagesAPI } from "../../services/api";
+import ImageUploader from "../../components/ImageUploader/ImageUploader";
 import "../Dashboard/Dashboard.css";
 import DashboardSidebar from "../Dashboard/DashboardSidebar";
 import "./PackageAdding.css";
@@ -13,6 +14,7 @@ const PackageAdding = () => {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm();
   const [isSaving, setIsSaving] = useState(false);
@@ -23,14 +25,21 @@ const PackageAdding = () => {
     try {
       setIsSaving(true);
       const response = await axios.post(packagesAPI, data);
-      if (!response.data.insertedId) throw new Error("The package could not be created.");
+      if (!response.data?.data?.insertedId) throw new Error("The package could not be created.");
       reset();
+      setValue("img1", "");
+      setValue("img2", "");
+      setValue("img3", "");
       setStatus({ type: "success", message: "Package published successfully." });
     } catch (error) {
       setStatus({ type: "error", message: error.message || "Unable to publish package." });
     } finally {
       setIsSaving(false);
     }
+  };
+
+  const onImageChange = (field, url) => {
+    setValue(field, url || "");
   };
 
   return (
@@ -118,15 +127,17 @@ const PackageAdding = () => {
               </span>
               <div>
                 <h2>Package images</h2>
-                <p>Use clear, high-quality image URLs for each itinerary day.</p>
+                <p>Upload a cover image for each itinerary day (max 2MB each).</p>
               </div>
             </div>
-            <div className="package-form-grid">
-              {[1, 2, 3].map((image) => (
-                <label className="package-field" key={image}>
-                  <span>Day {image} image URL</span>
-                  <input {...register(`img${image}`)} type="url" placeholder="https://..." />
-                </label>
+            <div className="package-image-grid">
+              {[1, 2, 3].map((n) => (
+                <ImageUploader
+                  key={n}
+                  label={`Day ${n} image`}
+                  onChange={(url) => onImageChange(`img${n}`, url)}
+                  required={false}
+                />
               ))}
             </div>
           </section>
