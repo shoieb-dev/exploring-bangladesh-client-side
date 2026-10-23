@@ -58,6 +58,19 @@
   gap: 1rem;
   padding-top: 1.25rem;
 }
+
+.package-image-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  padding-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .package-image-grid {
+    grid-template-columns: 1fr;
+  }
+}
 .package-field {
   display: flex;
   min-width: 0;
