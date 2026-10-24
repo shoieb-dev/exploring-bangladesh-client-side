@@ -25,7 +25,7 @@ const Packages = () => {
         // API returns { success, count, data: [...] } — unwrap it.
         // Keep backward compat if API ever returns a plain array.
         const list = Array.isArray(data) ? data : Array.isArray(data?.data) ? data.data : [];
-        setPackages(list);
+        setPackages(list.slice(0, 6));
       })
       .catch((err) => {
         if (mounted) setFetchError(err.message);
