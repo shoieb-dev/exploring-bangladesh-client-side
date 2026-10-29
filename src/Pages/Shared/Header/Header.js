@@ -15,21 +15,20 @@ const Header = () => {
     { label: "Testimonials", path: "/home#testimonial" },
   ];
 
-  const isDashboardRoute = ["/dashboard", "/myPackages", "/addPackage", "/managePackages", "/manageBookings", "/userList"].includes(
-    location.pathname
-  );
+  const isDashboardRoute = [
+    "/dashboard",
+    "/myPackages",
+    "/addPackage",
+    "/managePackages",
+    "/manageBookings",
+    "/userList",
+  ].includes(location.pathname);
 
   return (
     <Navbar collapseOnSelect expand="lg" variant="dark" className="header" fixed="top" role="navigation">
       <Container>
         <Navbar.Brand as={Link} to="/" className="navbar-brand-container">
-          <img
-            src="https://i.ibb.co/smrxtD7/Tour-Today-BD.png"
-            width="50"
-            height="50"
-            className="me-2"
-            alt="X-Ploring Bangladesh Logo"
-          />
+          <img src="/public/logo.png" width="50" height="50" className="me-2" alt="X-Ploring Bangladesh Logo" />
           <div className="brand-text">
             <h5 className="brand text-warning">X-PLORING</h5>
             <h6 className="text-info">BANGLADESH</h6>
