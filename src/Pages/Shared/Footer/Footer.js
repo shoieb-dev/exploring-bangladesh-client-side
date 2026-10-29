@@ -36,7 +36,7 @@ const Footer = () => {
             <Col>
               <div className="footer-section">
                 <div className="d-flex align-items-center mb-4">
-                  <img src="/public/logo.png" width="60" height="60" className="me-3" alt="X-Ploring Bangladesh Logo" />
+                  <img src="/logo.png" width="60" height="60" className="me-3" alt="X-Ploring Bangladesh Logo" />
                   <div>
                     <h4 className="brand text-warning mb-1">X-PLORING</h4>
                     <h6 className="text-info mb-0">BANGLADESH</h6>

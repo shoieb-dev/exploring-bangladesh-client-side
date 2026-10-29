@@ -28,7 +28,7 @@ const Header = () => {
     <Navbar collapseOnSelect expand="lg" variant="dark" className="header" fixed="top" role="navigation">
       <Container>
         <Navbar.Brand as={Link} to="/" className="navbar-brand-container">
-          <img src="/public/logo.png" width="50" height="50" className="me-2" alt="X-Ploring Bangladesh Logo" />
+          <img src="/logo.png" width="50" height="50" className="me-2" alt="X-Ploring Bangladesh Logo" />
           <div className="brand-text">
             <h5 className="brand text-warning">X-PLORING</h5>
             <h6 className="text-info">BANGLADESH</h6>
