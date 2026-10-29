@@ -9,6 +9,11 @@ import "../Dashboard/Dashboard.css";
 import DashboardSidebar from "../Dashboard/DashboardSidebar";
 import "./PackageAdding.css";
 
+const CLOUDINARY = {
+  cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME,
+  uploadPreset: import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET,
+};
+
 const PackageAdding = () => {
   const {
     register,
@@ -127,7 +132,7 @@ const PackageAdding = () => {
               </span>
               <div>
                 <h2>Package images</h2>
-                <p>Upload a cover image for each itinerary day (max 2MB each).</p>
+                <p>Upload a cover image for each itinerary day (max 1MB each).</p>
               </div>
             </div>
             <div className="package-image-grid">
@@ -136,7 +141,7 @@ const PackageAdding = () => {
                   key={n}
                   label={`Day ${n} image`}
                   onChange={(url) => onImageChange(`img${n}`, url)}
-                  required={false}
+                  cloudinary={CLOUDINARY}
                 />
               ))}
             </div>
