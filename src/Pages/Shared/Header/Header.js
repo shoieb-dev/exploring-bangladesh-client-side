@@ -22,7 +22,8 @@ const Header = () => {
     "/managePackages",
     "/manageBookings",
     "/userList",
-  ].includes(location.pathname);
+    location.pathname.startsWith("/editPackage/"),
+  ].some(Boolean);
 
   return (
     <Navbar collapseOnSelect expand="lg" variant="dark" className="header" fixed="top" role="navigation">
