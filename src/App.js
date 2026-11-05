@@ -64,6 +64,10 @@ function App() {
               <PackageAdding></PackageAdding>
             </AdminRoute>
 
+            <AdminRoute path="/editPackage/:packageId">
+              <PackageAdding></PackageAdding>
+            </AdminRoute>
+
             <AdminRoute path="/managePackages">
               <PackageManaging></PackageManaging>
             </AdminRoute>
