@@ -1,6 +1,12 @@
-import { faUpload, faTrashAlt, faExclamationCircle, faCloudUploadAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+  faUpload,
+  faTrashAlt,
+  faExclamationCircle,
+  faCloudUploadAlt,
+  faSyncAlt,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./ImageUploader.css";
 
 const MAX_SIZE_MB = 1;
@@ -74,14 +80,21 @@ const ImageUploader = ({
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(value || null);
   const [error, setError] = useState(null);
+  const [imageLoadError, setImageLoadError] = useState(false);
   const [reading, setReading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+
+  useEffect(() => {
+    setPreview(value || null);
+    setImageLoadError(false);
+  }, [value]);
 
   const handleChange = async (e) => {
     const selected = e.target.files?.[0] || null;
     if (!selected) return;
     setFile(selected);
     setError(null);
+    setImageLoadError(false);
     setUploadProgress(0);
 
     if (!selected.type || !selected.type.startsWith("image/")) {
@@ -132,6 +145,7 @@ const ImageUploader = ({
     setFile(null);
     setPreview(null);
     setError(null);
+    setImageLoadError(false);
     setUploadProgress(0);
     onChange(null);
   };
@@ -148,7 +162,25 @@ const ImageUploader = ({
       <div className="image-uploader-preview">
         {preview ? (
           <div className="image-uploader-preview-wrap">
-            <img src={preview} alt={label} className="image-uploader-img" loading="lazy" />
+            <img
+              src={preview}
+              alt={label}
+              className="image-uploader-img"
+              loading="lazy"
+              onError={() => setImageLoadError(true)}
+            />
+            <label className="image-uploader-replace">
+              <FontAwesomeIcon icon={faSyncAlt} />
+              <span>Replace image</span>
+              <input
+                type="file"
+                accept={accept}
+                onChange={handleChange}
+                disabled={disabled}
+                className="image-uploader-replace-input"
+                aria-label={`Replace ${label.toLowerCase()}`}
+              />
+            </label>
             <button
               type="button"
               className="image-uploader-remove"
@@ -201,7 +233,11 @@ const ImageUploader = ({
       </div>
       {hasValue && error === null && (
         <p className="image-uploader-hint">
-          {file ? `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)` : "Image ready"}
+          {imageLoadError
+            ? "This saved image could not be loaded. Replace it with a new upload."
+            : file
+              ? `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`
+              : "Saved image — replace it if the preview shows a hosting error."}
         </p>
       )}
     </div>
