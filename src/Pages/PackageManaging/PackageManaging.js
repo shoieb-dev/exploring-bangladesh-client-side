@@ -1,4 +1,4 @@
-import { faArrowRight, faMapMarkedAlt, faPlus, faSearch, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faEdit, faMapMarkedAlt, faPlus, faSearch, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
@@ -40,15 +40,21 @@ const ManagePackageRow = ({ pack, deleting, onDelete }) => {
         <span>{pack.duration || "Itinerary available"}</span>
         {pack.price && <small>BDT {pack.price} per person</small>}
       </div>
-      <button
-        type="button"
-        className="manage-delete-button"
-        onClick={() => onDelete(pack._id)}
-        disabled={deleting}
-      >
-        <FontAwesomeIcon icon={faTrash} />
-        {deleting ? "Deleting..." : "Delete"}
-      </button>
+      <div className="manage-package-actions">
+        <Link to={`/editPackage/${pack._id}`} className="manage-edit-button">
+          <FontAwesomeIcon icon={faEdit} />
+          Edit
+        </Link>
+        <button
+          type="button"
+          className="manage-delete-button"
+          onClick={() => onDelete(pack._id)}
+          disabled={deleting}
+        >
+          <FontAwesomeIcon icon={faTrash} />
+          {deleting ? "Deleting..." : "Delete"}
+        </button>
+      </div>
     </article>
   );
 };
