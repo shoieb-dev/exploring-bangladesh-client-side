@@ -15,15 +15,10 @@ const Header = () => {
     { label: "Testimonials", path: "/home#testimonial" },
   ];
 
-  const isDashboardRoute = [
-    "/dashboard",
-    "/myPackages",
-    "/addPackage",
-    "/managePackages",
-    "/manageBookings",
-    "/userList",
-    location.pathname.startsWith("/editPackage/"),
-  ].some(Boolean);
+  const isDashboardRoute =
+    ["/dashboard", "/myPackages", "/addPackage", "/managePackages", "/manageBookings", "/userList"].includes(
+      location.pathname,
+    ) || /^\/editPackage\//.test(location.pathname);
 
   return (
     <Navbar collapseOnSelect expand="lg" variant="dark" className="header" fixed="top" role="navigation">
