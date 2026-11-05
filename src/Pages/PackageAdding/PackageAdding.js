@@ -1,8 +1,9 @@
-import { faImage, faMapMarkedAlt, faPlus, faRoute } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faImage, faMapMarkedAlt, faPlus, faRoute } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useHistory, useParams } from "react-router-dom";
 import { packagesAPI } from "../../services/api";
 import ImageUploader from "../../components/ImageUploader/ImageUploader";
 import "../Dashboard/Dashboard.css";
@@ -15,32 +16,89 @@ const CLOUDINARY = {
 };
 
 const PackageAdding = () => {
+  const { packageId } = useParams();
+  const history = useHistory();
   const {
     register,
     handleSubmit,
     reset,
     setValue,
+    watch,
     formState: { errors },
   } = useForm();
   const [isSaving, setIsSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(Boolean(packageId));
+  const [packageData, setPackageData] = useState(null);
+  const [loadError, setLoadError] = useState("");
   const [status, setStatus] = useState({ type: "", message: "" });
+  const isEditing = Boolean(packageId);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    if (!packageId) {
+      setPackageData(null);
+      setLoadError("");
+      setIsLoading(false);
+      return () => {
+        isMounted = false;
+      };
+    }
+
+    const loadPackage = async () => {
+      try {
+        setIsLoading(true);
+        setLoadError("");
+        const response = await axios.get(`${packagesAPI}/${packageId}`);
+        const data = response.data?.data && typeof response.data.data === "object" ? response.data.data : response.data;
+        if (!data || typeof data !== "object" || Array.isArray(data)) {
+          throw new Error("The requested package could not be loaded.");
+        }
+
+        if (isMounted) {
+          setPackageData(data);
+          reset({ ...data, price: data.price ?? "" });
+          [1, 2, 3].forEach((day) => setValue(`img${day}`, data[`img${day}`] || ""));
+        }
+      } catch (error) {
+        if (isMounted) setLoadError(error.message || "Unable to load package.");
+      } finally {
+        if (isMounted) setIsLoading(false);
+      }
+    };
+
+    loadPackage();
+    return () => {
+      isMounted = false;
+    };
+  }, [packageId, reset, setValue]);
 
   const onSubmit = async (data) => {
     setStatus({ type: "", message: "" });
     try {
       setIsSaving(true);
-      const response = await axios.post(packagesAPI, data);
-      if (!response.data?.data?.insertedId) throw new Error("The package could not be created.");
-      reset();
-      setValue("img1", "");
-      setValue("img2", "");
-      setValue("img3", "");
-      setStatus({ type: "success", message: "Package published successfully." });
+      if (isEditing) {
+        await axios.put(`${packagesAPI}/${packageId}`, data);
+        setPackageData((current) => ({ ...current, ...data }));
+        setStatus({ type: "success", message: "Package updated successfully." });
+      } else {
+        const response = await axios.post(packagesAPI, data);
+        if (!response.data?.data?.insertedId) throw new Error("The package could not be created.");
+        reset();
+        [1, 2, 3].forEach((day) => setValue(`img${day}`, ""));
+        setStatus({ type: "success", message: "Package published successfully." });
+      }
     } catch (error) {
-      setStatus({ type: "error", message: error.message || "Unable to publish package." });
+      setStatus({ type: "error", message: error.message || `Unable to ${isEditing ? "update" : "publish"} package.` });
     } finally {
       setIsSaving(false);
     }
+  };
+
+  const resetForm = () => {
+    reset(isEditing ? { ...packageData, price: packageData?.price ?? "" } : {});
+    [1, 2, 3].forEach((day) => setValue(`img${day}`, packageData?.[`img${day}`] || ""));
+    setStatus({ type: "", message: "" });
   };
 
   const onImageChange = (field, url) => {
@@ -54,14 +112,34 @@ const PackageAdding = () => {
         <header className="dashboard-window-header add-package-header">
           <div>
             <span className="dashboard-kicker">Administration</span>
-            <h1>Add a package</h1>
-            <p>Create a complete itinerary that travelers can discover and book.</p>
+            <h1>{isEditing ? "Edit package" : "Add a package"}</h1>
+            <p>
+              {isEditing
+                ? "Update the itinerary and images travelers see when they discover this package."
+                : "Create a complete itinerary that travelers can discover and book."}
+            </p>
           </div>
           <div className="add-package-header-icon">
-            <FontAwesomeIcon icon={faPlus} />
+            <FontAwesomeIcon icon={isEditing ? faEdit : faPlus} />
           </div>
         </header>
 
+        {isLoading ? (
+          <div className="package-form-status" role="status">
+            Loading package...
+          </div>
+        ) : loadError ? (
+          <>
+            <div className="package-form-status error" role="alert">
+              {loadError}
+            </div>
+            <div className="package-form-actions">
+              <button type="button" className="package-cancel-button" onClick={() => history.push("/managePackages")}>
+                Back to packages
+              </button>
+            </div>
+          </>
+        ) : (
         <form className="package-editor" onSubmit={handleSubmit(onSubmit)}>
           <section className="package-editor-section">
             <div className="package-editor-section-heading">
@@ -137,12 +215,15 @@ const PackageAdding = () => {
             </div>
             <div className="package-image-grid">
               {[1, 2, 3].map((n) => (
-                <ImageUploader
-                  key={n}
-                  label={`Day ${n} image`}
-                  onChange={(url) => onImageChange(`img${n}`, url)}
-                  cloudinary={CLOUDINARY}
-                />
+                <div key={n}>
+                  <input type="hidden" {...register(`img${n}`)} />
+                  <ImageUploader
+                    label={`Day ${n} image`}
+                    value={watch(`img${n}`)}
+                    onChange={(url) => onImageChange(`img${n}`, url)}
+                    cloudinary={CLOUDINARY}
+                  />
+                </div>
               ))}
             </div>
           </section>
@@ -153,14 +234,15 @@ const PackageAdding = () => {
             </div>
           )}
           <div className="package-form-actions">
-            <button type="button" className="package-cancel-button" onClick={() => reset()}>
-              Clear form
+            <button type="button" className="package-cancel-button" onClick={resetForm}>
+              {isEditing ? "Reset changes" : "Clear form"}
             </button>
             <button type="submit" className="package-submit-button" disabled={isSaving}>
-              {isSaving ? "Publishing..." : "Publish package"}
+              {isSaving ? (isEditing ? "Saving..." : "Publishing...") : isEditing ? "Save changes" : "Publish package"}
             </button>
           </div>
         </form>
+        )}
       </section>
     </main>
   );
