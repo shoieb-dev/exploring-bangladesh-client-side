@@ -33,6 +33,8 @@ const DashboardSidebar = () => {
   ];
 
   const items = isAdmin ? adminItems : travelerItems;
+  const isEditingPackage = location.pathname.startsWith("/editPackage/");
+  const isActiveItem = (path) => location.pathname === path || (path === "/managePackages" && isEditingPackage);
 
   return (
     <aside className="dashboard-sidebar" aria-label="Dashboard navigation">
@@ -52,7 +54,8 @@ const DashboardSidebar = () => {
           <Link
             key={item.path}
             to={item.path}
-            className={`dashboard-nav-item ${location.pathname === item.path ? "active" : ""}`}
+            className={`dashboard-nav-item ${isActiveItem(item.path) ? "active" : ""}`}
+            aria-current={isActiveItem(item.path) ? "page" : undefined}
           >
             <FontAwesomeIcon icon={item.icon} />
             {item.label}
