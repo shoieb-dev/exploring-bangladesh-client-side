@@ -19,6 +19,8 @@ initializeAuthentication();
 // Falls back to localhost:5000 when VITE_API_URL is not set.
 const API_BASE = API_BASE_URL || "http://localhost:5000";
 
+const isAdminUser = (userData) => userData?.role === "admin" || Boolean(userData?.isAdmin);
+
 const useFirebase = () => {
   const [user, setUser] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -62,10 +64,9 @@ const useFirebase = () => {
       const json = await res.json().catch(() => null);
       if (json?.success && json?.data) {
         setBackendUser(json.data);
-        if (json.data.role) {
-          setRole(json.data.role);
-          setIsAdmin(json.data.role === "admin");
-        }
+        const userIsAdmin = isAdminUser(json.data);
+        setRole(userIsAdmin ? "admin" : "user");
+        setIsAdmin(userIsAdmin);
         return json.data;
       }
       return null;
@@ -89,9 +90,10 @@ const useFirebase = () => {
         const res = await fetch(`${API_BASE}/api/users/me?email=${encodeURIComponent(target)}`);
         const json = await res.json().catch(() => null);
         if (json?.success && json?.data) {
-          setRole(json.data.role || "user");
-          setIsAdmin(Boolean(json.data.isAdmin));
-          return json.data;
+          const userIsAdmin = isAdminUser(json.data);
+          setRole(userIsAdmin ? "admin" : "user");
+          setIsAdmin(userIsAdmin);
+          return { ...json.data, role: userIsAdmin ? "admin" : "user", isAdmin: userIsAdmin };
         }
       } catch {
         // keep previous role on network error
@@ -198,10 +200,13 @@ const useFirebase = () => {
     const unsubscribed = onAuthStateChanged(auth, (fbUser) => {
       if (fbUser) {
         setUser(fbUser);
+        setRoleLoading(true);
         setIsLoading(false);
-        // background sync — must not delay UI
-        syncUserToBackend(fbUser).catch(() => {});
-        refreshRole(fbUser.email).catch(() => {});
+        const resolveUserRole = async () => {
+          await syncUserToBackend(fbUser);
+          await refreshRole(fbUser.email);
+        };
+        resolveUserRole().finally(() => setRoleLoading(false));
       } else {
         setUser({});
         setBackendUser(null);
