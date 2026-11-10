@@ -81,6 +81,7 @@ const PackageAdding = () => {
         await axios.put(`${packagesAPI}/${packageId}`, data);
         setPackageData((current) => ({ ...current, ...data }));
         setStatus({ type: "success", message: "Package updated successfully." });
+        setTimeout(() => history.push("/managePackages"), 1500);
       } else {
         const response = await axios.post(packagesAPI, data);
         if (!response.data?.data?.insertedId) throw new Error("The package could not be created.");
@@ -140,108 +141,118 @@ const PackageAdding = () => {
             </div>
           </>
         ) : (
-        <form className="package-editor" onSubmit={handleSubmit(onSubmit)}>
-          <section className="package-editor-section">
-            <div className="package-editor-section-heading">
-              <span className="package-editor-icon">
-                <FontAwesomeIcon icon={faMapMarkedAlt} />
-              </span>
-              <div>
-                <h2>Package basics</h2>
-                <p>Give travelers the essential information first.</p>
-              </div>
-            </div>
-            <div className="package-form-grid">
-              <label className="package-field package-field-wide">
-                <span>
-                  Package name <b>*</b>
+          <form className="package-editor" onSubmit={handleSubmit(onSubmit)}>
+            <section className="package-editor-section">
+              <div className="package-editor-section-heading">
+                <span className="package-editor-icon">
+                  <FontAwesomeIcon icon={faMapMarkedAlt} />
                 </span>
-                <input
-                  {...register("name", {
-                    required: "Package name is required",
-                    maxLength: { value: 50, message: "Use 50 characters or fewer" },
-                  })}
-                  placeholder="e.g. Dhaka - Saint Martins Island - Dhaka"
-                />
-                {errors.name && <small>{errors.name.message}</small>}
-              </label>
-              <label className="package-field">
-                <span>Duration</span>
-                <input {...register("duration")} placeholder="e.g. 3 Days / 2 Nights" />
-              </label>
-              <label className="package-field">
-                <span>Price (BDT)</span>
-                <input type="number" min="0" {...register("price")} placeholder="6500" />
-              </label>
-            </div>
-          </section>
-
-          <section className="package-editor-section">
-            <div className="package-editor-section-heading">
-              <span className="package-editor-icon">
-                <FontAwesomeIcon icon={faRoute} />
-              </span>
-              <div>
-                <h2>Itinerary</h2>
-                <p>Add the day titles and descriptions travelers will see.</p>
-              </div>
-            </div>
-            <div className="package-days-grid">
-              {[1, 2, 3].map((day) => (
-                <fieldset className="package-day-card" key={day}>
-                  <legend>Day {day}</legend>
-                  <label className="package-field">
-                    <span>Day title</span>
-                    <input {...register(`day${day}`)} placeholder={`Day ${day} title`} />
-                  </label>
-                  <label className="package-field">
-                    <span>Description</span>
-                    <textarea {...register(`description${day}`)} placeholder="Describe the day's experience" rows="5" />
-                  </label>
-                </fieldset>
-              ))}
-            </div>
-          </section>
-
-          <section className="package-editor-section">
-            <div className="package-editor-section-heading">
-              <span className="package-editor-icon">
-                <FontAwesomeIcon icon={faImage} />
-              </span>
-              <div>
-                <h2>Package images</h2>
-                <p>Upload a cover image for each itinerary day (max 1MB each).</p>
-              </div>
-            </div>
-            <div className="package-image-grid">
-              {[1, 2, 3].map((n) => (
-                <div key={n}>
-                  <input type="hidden" {...register(`img${n}`)} />
-                  <ImageUploader
-                    label={`Day ${n} image`}
-                    value={watch(`img${n}`)}
-                    onChange={(url) => onImageChange(`img${n}`, url)}
-                    cloudinary={CLOUDINARY}
-                  />
+                <div>
+                  <h2>Package basics</h2>
+                  <p>Give travelers the essential information first.</p>
                 </div>
-              ))}
-            </div>
-          </section>
+              </div>
+              <div className="package-form-grid">
+                <label className="package-field package-field-wide">
+                  <span>
+                    Package name <b>*</b>
+                  </span>
+                  <input
+                    {...register("name", {
+                      required: "Package name is required",
+                      maxLength: { value: 50, message: "Use 50 characters or fewer" },
+                    })}
+                    placeholder="e.g. Dhaka - Saint Martins Island - Dhaka"
+                  />
+                  {errors.name && <small>{errors.name.message}</small>}
+                </label>
+                <label className="package-field">
+                  <span>Duration</span>
+                  <input {...register("duration")} placeholder="e.g. 3 Days / 2 Nights" />
+                </label>
+                <label className="package-field">
+                  <span>Price (BDT)</span>
+                  <input type="number" min="0" {...register("price")} placeholder="6500" />
+                </label>
+              </div>
+            </section>
 
-          {status.message && (
-            <div className={`package-form-status ${status.type}`} role="status">
-              {status.message}
+            <section className="package-editor-section">
+              <div className="package-editor-section-heading">
+                <span className="package-editor-icon">
+                  <FontAwesomeIcon icon={faRoute} />
+                </span>
+                <div>
+                  <h2>Itinerary</h2>
+                  <p>Add the day titles and descriptions travelers will see.</p>
+                </div>
+              </div>
+              <div className="package-days-grid">
+                {[1, 2, 3].map((day) => (
+                  <fieldset className="package-day-card" key={day}>
+                    <legend>Day {day}</legend>
+                    <label className="package-field">
+                      <span>Day title</span>
+                      <input {...register(`day${day}`)} placeholder={`Day ${day} title`} />
+                    </label>
+                    <label className="package-field">
+                      <span>Description</span>
+                      <textarea
+                        {...register(`description${day}`)}
+                        placeholder="Describe the day's experience"
+                        rows="5"
+                      />
+                    </label>
+                  </fieldset>
+                ))}
+              </div>
+            </section>
+
+            <section className="package-editor-section">
+              <div className="package-editor-section-heading">
+                <span className="package-editor-icon">
+                  <FontAwesomeIcon icon={faImage} />
+                </span>
+                <div>
+                  <h2>Package images</h2>
+                  <p>Upload a cover image for each itinerary day (max 1MB each).</p>
+                </div>
+              </div>
+              <div className="package-image-grid">
+                {[1, 2, 3].map((n) => (
+                  <div key={n}>
+                    <input type="hidden" {...register(`img${n}`)} />
+                    <ImageUploader
+                      label={`Day ${n} image`}
+                      value={watch(`img${n}`)}
+                      onChange={(url) => onImageChange(`img${n}`, url)}
+                      cloudinary={CLOUDINARY}
+                    />
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {status.message && (
+              <div className={`package-form-status ${status.type}`} role="status">
+                {status.message}
+              </div>
+            )}
+            <div className="package-form-actions">
+              <button type="button" className="package-cancel-button" onClick={resetForm}>
+                {isEditing ? "Reset changes" : "Clear form"}
+              </button>
+              <button type="submit" className="package-submit-button" disabled={isSaving}>
+                {isSaving
+                  ? isEditing
+                    ? "Saving..."
+                    : "Publishing..."
+                  : isEditing
+                    ? "Save changes"
+                    : "Publish package"}
+              </button>
             </div>
-          )}
-          <div className="package-form-actions">
-            <button type="button" className="package-cancel-button" onClick={resetForm}>
-              {isEditing ? "Reset changes" : "Clear form"}
-            </button>
-            <button type="submit" className="package-submit-button" disabled={isSaving}>
-              {isSaving ? (isEditing ? "Saving..." : "Publishing...") : isEditing ? "Save changes" : "Publish package"}
-            </button>
-          </div>
-        </form>
+          </form>
         )}
       </section>
     </main>
