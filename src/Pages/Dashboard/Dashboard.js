@@ -3,17 +3,68 @@ import {
   faCalendarCheck,
   faCompass,
   faHeart,
+  faRoute,
   faSuitcaseRolling,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useState } from "react";
 import { HashLink } from "react-router-hash-link";
 import useAuth from "../../hooks/useAuth";
+import { bookingsAPI, packagesAPI } from "../../services/api";
 import "./Dashboard.css";
 import DashboardSidebar from "./DashboardSidebar";
+
+const fetchList = async (url, label) => {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`Unable to load ${label} (${response.status}).`);
+
+  const result = await response.json();
+  const list = Array.isArray(result) ? result : result?.data;
+  if (!Array.isArray(list)) throw new Error(`The ${label} response has an unexpected format.`);
+  return list;
+};
+
+const hasItinerary = (pack) =>
+  [1, 2, 3].some((day) =>
+    [pack[`day${day}`], pack[`description${day}`]].some((value) => typeof value === "string" && value.trim()),
+  );
 
 const Dashboard = () => {
   const { user, isAdmin } = useAuth();
   const displayName = user?.displayName || user?.email?.split("@")[0] || "Traveler";
+  const [bookingsCount, setBookingsCount] = useState(null);
+  const [packages, setPackages] = useState(null);
+  const [statsLoading, setStatsLoading] = useState(false);
+  const [statsError, setStatsError] = useState("");
+
+  useEffect(() => {
+    if (!isAdmin) return undefined;
+
+    let isMounted = true;
+    const loadStats = async () => {
+      setStatsLoading(true);
+      setStatsError("");
+      const results = await Promise.allSettled([
+        fetchList(bookingsAPI, "bookings"),
+        fetchList(packagesAPI, "packages"),
+      ]);
+
+      if (isMounted) {
+        const errors = [];
+        if (results[0].status === "fulfilled") setBookingsCount(results[0].value.length);
+        else errors.push(results[0].reason.message);
+        if (results[1].status === "fulfilled") setPackages(results[1].value);
+        else errors.push(results[1].reason.message);
+        setStatsError(errors.join(" "));
+        setStatsLoading(false);
+      }
+    };
+
+    loadStats();
+    return () => {
+      isMounted = false;
+    };
+  }, [isAdmin]);
 
   return (
     <main className="dashboard-shell">
@@ -28,7 +79,7 @@ const Dashboard = () => {
             </h1>
             <p>
               {isAdmin
-                ? "Manage packages, bookings, and traveler experiences from one place."
+                ? "Manage packages, bookings, and itinerary details from one place."
                 : "Keep your upcoming adventures and saved travel plans in one place."}
             </p>
           </div>
@@ -40,34 +91,39 @@ const Dashboard = () => {
         {isAdmin ? (
           <>
             <div className="dashboard-stat-grid">
-              <article className="dashboard-stat-card accent-teal">
+              <article className="dashboard-stat-card accent-teal" aria-busy={statsLoading}>
                 <span className="dashboard-stat-icon">
                   <FontAwesomeIcon icon={faCalendarCheck} />
                 </span>
                 <div>
-                  <strong>—</strong>
+                  <strong>{bookingsCount === null ? "—" : bookingsCount}</strong>
                   <span>Total bookings</span>
                 </div>
               </article>
-              <article className="dashboard-stat-card accent-gold">
+              <article className="dashboard-stat-card accent-gold" aria-busy={statsLoading}>
                 <span className="dashboard-stat-icon">
                   <FontAwesomeIcon icon={faSuitcaseRolling} />
                 </span>
                 <div>
-                  <strong>—</strong>
-                  <span>Published packages</span>
+                  <strong>{packages === null ? "—" : packages.length}</strong>
+                  <span>Packages</span>
                 </div>
               </article>
-              <article className="dashboard-stat-card accent-blue">
+              <article className="dashboard-stat-card accent-blue" aria-busy={statsLoading}>
                 <span className="dashboard-stat-icon">
-                  <FontAwesomeIcon icon={faCompass} />
+                  <FontAwesomeIcon icon={faRoute} />
                 </span>
                 <div>
-                  <strong>—</strong>
-                  <span>Experiences live</span>
+                  <strong>{packages === null ? "—" : packages.filter(hasItinerary).length}</strong>
+                  <span>Packages with itinerary</span>
                 </div>
               </article>
             </div>
+            {statsError && (
+              <div className="dashboard-stats-error" role="alert">
+                {statsError}
+              </div>
+            )}
 
             <div className="dashboard-content-grid">
               <section className="dashboard-panel dashboard-welcome-panel">
