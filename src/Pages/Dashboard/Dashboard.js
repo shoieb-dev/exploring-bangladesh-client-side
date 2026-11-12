@@ -2,7 +2,6 @@ import {
   faArrowRight,
   faCalendarCheck,
   faCompass,
-  faHeart,
   faRoute,
   faSuitcaseRolling,
 } from "@fortawesome/free-solid-svg-icons";
@@ -10,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { HashLink } from "react-router-hash-link";
 import useAuth from "../../hooks/useAuth";
-import { bookingsAPI, packagesAPI } from "../../services/api";
+import { bookingsAPI, myPackagesAPI, packagesAPI } from "../../services/api";
 import "./Dashboard.css";
 import DashboardSidebar from "./DashboardSidebar";
 
@@ -29,6 +28,15 @@ const hasItinerary = (pack) =>
     [pack[`day${day}`], pack[`description${day}`]].some((value) => typeof value === "string" && value.trim()),
   );
 
+const getLocalDateString = (date) =>
+  `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+
+const isValidDateString = (value) => {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const date = new Date(`${value}T00:00:00`);
+  return !Number.isNaN(date.getTime()) && getLocalDateString(date) === value;
+};
+
 const Dashboard = () => {
   const { user, isAdmin } = useAuth();
   const displayName = user?.displayName || user?.email?.split("@")[0] || "Traveler";
@@ -36,6 +44,9 @@ const Dashboard = () => {
   const [packages, setPackages] = useState(null);
   const [statsLoading, setStatsLoading] = useState(false);
   const [statsError, setStatsError] = useState("");
+  const [userBookings, setUserBookings] = useState(null);
+  const [userBookingsLoading, setUserBookingsLoading] = useState(false);
+  const [userBookingsError, setUserBookingsError] = useState("");
 
   useEffect(() => {
     if (!isAdmin) return undefined;
@@ -65,6 +76,37 @@ const Dashboard = () => {
       isMounted = false;
     };
   }, [isAdmin]);
+
+  useEffect(() => {
+    if (isAdmin || !user?.email) return undefined;
+
+    let isMounted = true;
+    const loadUserBookings = async () => {
+      setUserBookings(null);
+      setUserBookingsLoading(true);
+      setUserBookingsError("");
+      try {
+        const list = await fetchList(`${myPackagesAPI}/${encodeURIComponent(user.email)}`, "your bookings");
+        if (isMounted) setUserBookings(list);
+      } catch (error) {
+        if (isMounted) setUserBookingsError(error.message);
+      } finally {
+        if (isMounted) setUserBookingsLoading(false);
+      }
+    };
+
+    loadUserBookings();
+    return () => {
+      isMounted = false;
+    };
+  }, [isAdmin, user?.email]);
+
+  const today = getLocalDateString(new Date());
+  const upcomingTrips =
+    userBookings?.filter((booking) => isValidDateString(booking.date) && booking.date >= today).length ?? null;
+  const completedTrips =
+    userBookings?.filter((booking) => isValidDateString(booking.date) && booking.date < today).length ?? null;
+  const recentBookings = userBookings?.slice(0, 3) ?? [];
 
   return (
     <main className="dashboard-shell">
@@ -151,35 +193,40 @@ const Dashboard = () => {
           </>
         ) : (
           <>
-            <div className="dashboard-stat-grid">
+            <div className="dashboard-stat-grid" aria-busy={userBookingsLoading}>
               <article className="dashboard-stat-card accent-teal">
                 <span className="dashboard-stat-icon">
                   <FontAwesomeIcon icon={faCalendarCheck} />
                 </span>
                 <div>
-                  <strong>0</strong>
+                  <strong>{upcomingTrips === null ? "—" : upcomingTrips}</strong>
                   <span>Upcoming trips</span>
                 </div>
               </article>
               <article className="dashboard-stat-card accent-gold">
                 <span className="dashboard-stat-icon">
-                  <FontAwesomeIcon icon={faHeart} />
+                  <FontAwesomeIcon icon={faSuitcaseRolling} />
                 </span>
                 <div>
-                  <strong>0</strong>
-                  <span>Saved packages</span>
+                  <strong>{userBookings === null ? "—" : userBookings.length}</strong>
+                  <span>Booked packages</span>
                 </div>
               </article>
               <article className="dashboard-stat-card accent-blue">
                 <span className="dashboard-stat-icon">
-                  <FontAwesomeIcon icon={faSuitcaseRolling} />
+                  <FontAwesomeIcon icon={faRoute} />
                 </span>
                 <div>
-                  <strong>0</strong>
+                  <strong>{completedTrips === null ? "—" : completedTrips}</strong>
                   <span>Completed trips</span>
                 </div>
               </article>
             </div>
+            {userBookingsError && (
+              <div className="dashboard-stats-error" role="alert">
+                {userBookingsError}
+              </div>
+            )}
 
             <div className="dashboard-content-grid">
               <section className="dashboard-panel dashboard-welcome-panel">
@@ -197,11 +244,32 @@ const Dashboard = () => {
                   <h2>Recent activity</h2>
                   <FontAwesomeIcon icon={faCalendarCheck} />
                 </div>
-                <div className="dashboard-empty-state">
-                  <FontAwesomeIcon icon={faCompass} />
-                  <p>Your booked trips will appear here.</p>
-                  <span>Ready when you are.</span>
-                </div>
+                {userBookingsLoading ? (
+                  <div className="dashboard-empty-state" aria-live="polite">
+                    <p>Loading your bookings...</p>
+                  </div>
+                ) : userBookingsError ? (
+                  <div className="dashboard-empty-state">
+                    <FontAwesomeIcon icon={faCompass} />
+                    <p>We couldn’t load your bookings.</p>
+                    <span>Refresh the page to try again.</span>
+                  </div>
+                ) : recentBookings.length === 0 ? (
+                  <div className="dashboard-empty-state">
+                    <FontAwesomeIcon icon={faCompass} />
+                    <p>Your booked trips will appear here.</p>
+                    <span>Ready when you are.</span>
+                  </div>
+                ) : (
+                  <ul className="dashboard-booking-list">
+                    {recentBookings.map((booking, index) => (
+                      <li key={booking._id || `${booking.package}-${booking.date}-${index}`}>
+                        <strong>{booking.package || "Booked package"}</strong>
+                        <span>{booking.date ? `Travel date: ${booking.date}` : "Travel date not selected"}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </section>
             </div>
           </>
