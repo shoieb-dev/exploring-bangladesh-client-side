@@ -1,0 +1,20 @@
+.confirmation-modal .modal-content {
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.25);
+}
+
+.confirmation-modal .modal-title {
+  color: #102a43;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.confirmation-modal .modal-body {
+  color: #475569;
+}
+
+.confirmation-modal .modal-footer .btn {
+  min-width: 90px;
+  font-weight: 700;
+}
