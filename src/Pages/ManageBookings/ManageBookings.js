@@ -10,6 +10,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
+import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
 import { bookingsAPI } from "../../services/api";
 import "../Dashboard/Dashboard.css";
 import DashboardSidebar from "../Dashboard/DashboardSidebar";
@@ -20,6 +21,7 @@ const ManageBookings = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [deletingId, setDeletingId] = useState("");
+  const [pendingDeleteId, setPendingDeleteId] = useState(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -57,8 +59,9 @@ const ManageBookings = () => {
     );
   }, [bookings, searchTerm]);
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Delete this booking? This action cannot be undone.")) return;
+  const handleDelete = async () => {
+    const id = pendingDeleteId;
+    if (!id) return;
     try {
       setDeletingId(id);
       await axios.delete(`${bookingsAPI}/${id}`);
@@ -67,6 +70,7 @@ const ManageBookings = () => {
       setError(deleteError.message || "Unable to delete booking.");
     } finally {
       setDeletingId("");
+      setPendingDeleteId(null);
     }
   };
 
@@ -146,7 +150,7 @@ const ManageBookings = () => {
                   <button
                     type="button"
                     className="manage-booking-delete"
-                    onClick={() => handleDelete(b._id)}
+                    onClick={() => setPendingDeleteId(b._id)}
                     disabled={deletingId === b._id}
                   >
                     <FontAwesomeIcon icon={faTrash} />
@@ -158,6 +162,15 @@ const ManageBookings = () => {
           )}
         </section>
       </section>
+      <ConfirmationModal
+        show={pendingDeleteId !== null}
+        title="Delete booking?"
+        message="Delete this booking? This action cannot be undone."
+        confirmLabel="Delete"
+        isConfirming={deletingId !== ""}
+        onCancel={() => setPendingDeleteId(null)}
+        onConfirm={handleDelete}
+      />
     </main>
   );
 };

@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
+import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
 import { packagesAPI } from "../../services/api";
 import "../Dashboard/Dashboard.css";
 import DashboardSidebar from "../Dashboard/DashboardSidebar";
@@ -64,6 +65,7 @@ const PackageManaging = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [deletingId, setDeletingId] = useState("");
+  const [pendingDeleteId, setPendingDeleteId] = useState(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -99,9 +101,9 @@ const PackageManaging = () => {
     return packages.filter((item) => item.name?.toLowerCase().includes(normalizedSearch));
   }, [packages, searchTerm]);
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Delete this package? This action cannot be undone.")) return;
-
+  const handleDelete = async () => {
+    const id = pendingDeleteId;
+    if (!id) return;
     try {
       setDeletingId(id);
       const response = await axios.delete(`${packagesAPI}/${id}`);
@@ -111,6 +113,7 @@ const PackageManaging = () => {
       setError(deleteError.message || "Unable to delete package.");
     } finally {
       setDeletingId("");
+      setPendingDeleteId(null);
     }
   };
 
@@ -170,7 +173,12 @@ const PackageManaging = () => {
           ) : (
             <div className="manage-package-list">
               {visiblePackages.map((pack) => (
-                <ManagePackageRow key={pack._id} pack={pack} deleting={deletingId === pack._id} onDelete={handleDelete} />
+                <ManagePackageRow
+                  key={pack._id}
+                  pack={pack}
+                  deleting={deletingId === pack._id}
+                  onDelete={setPendingDeleteId}
+                />
               ))}
             </div>
           )}
@@ -180,6 +188,15 @@ const PackageManaging = () => {
           View public packages <FontAwesomeIcon icon={faArrowRight} />
         </HashLink>
       </section>
+      <ConfirmationModal
+        show={pendingDeleteId !== null}
+        title="Delete package?"
+        message="Delete this package? This action cannot be undone."
+        confirmLabel="Delete"
+        isConfirming={deletingId !== ""}
+        onCancel={() => setPendingDeleteId(null)}
+        onConfirm={handleDelete}
+      />
     </main>
   );
 };

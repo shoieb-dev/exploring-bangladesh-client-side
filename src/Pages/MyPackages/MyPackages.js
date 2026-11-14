@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
 import useAuth from "../../hooks/useAuth";
 import { myPackagesAPI } from "../../services/api";
 import "../Dashboard/Dashboard.css";
@@ -14,6 +15,7 @@ const MyPackages = () => {
   const [packages, setPackages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [deletingId, setDeletingId] = useState("");
+  const [pendingDeleteId, setPendingDeleteId] = useState(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -47,9 +49,9 @@ const MyPackages = () => {
     };
   }, [user?.email]);
 
-  const handleDelete = async (packageId) => {
-    if (!window.confirm("Remove this booking from your packages?")) return;
-
+  const handleDelete = async () => {
+    const packageId = pendingDeleteId;
+    if (!packageId) return;
     try {
       setDeletingId(packageId);
       await axios.delete(`${myPackagesAPI}/${packageId}`);
@@ -58,6 +60,7 @@ const MyPackages = () => {
       setError(deleteError.message || "Unable to remove this booking.");
     } finally {
       setDeletingId("");
+      setPendingDeleteId(null);
     }
   };
 
@@ -124,7 +127,7 @@ const MyPackages = () => {
                   <button
                     type="button"
                     className="my-package-delete"
-                    onClick={() => handleDelete(pack._id)}
+                    onClick={() => setPendingDeleteId(pack._id)}
                     disabled={deletingId === pack._id}
                   >
                     <FontAwesomeIcon icon={faTrash} />
@@ -136,6 +139,15 @@ const MyPackages = () => {
           )}
         </section>
       </section>
+      <ConfirmationModal
+        show={pendingDeleteId !== null}
+        title="Remove booking?"
+        message="Remove this booking from your packages?"
+        confirmLabel="Remove"
+        isConfirming={deletingId !== ""}
+        onCancel={() => setPendingDeleteId(null)}
+        onConfirm={handleDelete}
+      />
     </main>
   );
 };
